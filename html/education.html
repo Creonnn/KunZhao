@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+        <link rel="stylesheet" href="..\css\style.css">
+        <!-- Renders LaTeX -->
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        
+        <title>Profile</title>
+    </head>
+    <body>
+        <div class="mainNav">
+            <a href="index.html">Home</a>
+            <a href="projects.html">Projects</a>
+            <a href="experience.html">Work Experience</a>
+            <a href="education.html">Education</a>
+            <a href="about.html">About</a>
+        </div>
+        <div class="margins">
+            <h1>Undergraduate</h1>
+            <div style="margin-left: 40px;" class="pSpacing">
+                <h4>University of Toronto (2018-2024)</h4>
+                <li>Honours Bachelor of Science - Major in Mathematics, Major in Applied Statistics</li>
+                <li>
+                    Recognized as a MSC (Mathematics Statistics, Computer Science) Honour Student for the 
+                    <a target="_blank" href="https://www.utm.utoronto.ca/math-cs-stats/awards/honour-roll/2019-2020">2019-2020</a> 
+                    and
+                    <a target="_blank" href="https://www.utm.utoronto.ca/math-cs-stats/awards/student-awards/honour-roll/2021-2022">2021-2022</a>
+                    study year 
+                    for achieving a final grade of 90% or more in at least three MCS courses.
+                </li>
+                <li>
+                    Named a Dean's List Scholar for the 2021-2022 study year for achieving a cumulative gpa of 3.50 at the
+                    end of each session in which the fifth, tenth, fifteenth or twentieth course has been passed.
+                </li>
+                
+                <button type="button" class="collapsible">Degree-related courses taken</button>
+                <div style="margin-left: 40px;" class="content">
+                        <li>CSC108H5 - Introduction to Computer Programming</li>
+                        <li>STA107H5 - An Introduction to Probability and Modelling</li>
+                        <li>STA256H5 - Probability and Statistics I</li>
+                        <li>STA260H5 - Probability and Statistics II</li>
+                        <li>STA258H5 - Statistics with Applied Probability</li>
+                        <li>STA302H5 - Regression Analysis</li>
+                        <li>STA304H5 - Surveys, Sampling and Observational Data</li>
+                        <li>STA305H5 - Experimental Design</li>
+                        <li>STA312H5 - Computational Statistics</li>
+                        <li>STA313H5 - Introduction to Bayesian Statistics</li>
+                        <li>STA314H5 - Introduction to Statistical Learning</li>
+                        <li>STA441H5 - Data Analysis</li>
+                        <li>STA348H5 - Introduction to Stochastic Processes</li>
+                        <li>STA457H5 - Applied Time Series Analysis</li>
+                        <li>MAT102H5 - Introduction to Mathematical Proofs</li>
+                        <li>MAT135Y5 - Calculus</li>
+                        <li>MAT202H5 - Introduction to Discrete Mathematics</li>
+                        <li>MAT223H5 - Linear Algebra I</li>
+                        <li>MAT224H5 - Linear Algebra II</li>
+                        <li>MAT244H5 - Differential Equations I</li>
+                        <li>MAT232H5 - Calculus of Several Variables</li>
+                        <li>MAT236H5 - Vector Calculus</li>
+                        <li>MAT301H5 - Groups and Symmetries</li>
+                        <li>MAT302H5 - Introduction to Algebraic Cryptography</li>
+                        <li>MAT315H5 - Introduction to Number Theory</li>
+                        <li>MAT332H5 - Introduction to Nonlinear Dynamics and Chaos</li>
+                        <li>MAT337H5 - Introduction to Real Analysis</li>
+                        <li>MAT344H5 - Introduction to Combinatorics</li>
+                        <li>MAT334H5 - Calculus of Complex Variables</li>
+                        <li>MAT387H5 - Circle Squaring</li>
+                        <li>MAT402H5 - Classical Geometries</li>
+                </div>
+            </div>
+        
+        </div>
+        <script>
+            var coll = document.getElementsByClassName("collapsible");
+            var i;
+            
+            for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                content.style.display = "none";
+                } else {
+                content.style.display = "block";
+                }
+            });
+            }
+        </script>
+
+    </body>
+</html>
