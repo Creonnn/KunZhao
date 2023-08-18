@@ -3,24 +3,77 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
         <link rel="stylesheet" href="..\css\style.css">
-        <!-- Renders LaTeX -->
-        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-        
         <title>Profile</title>
     </head>
     <body>
-      <div class="mainNav">
-        <a href="..\index.html">Home</a>
-        <a href=".\projects.html">Projects</a>
-        <a href=".\experience.html">Work Experience</a>
-        <a href=".\education.html">Education</a>
-        <a href=".\about.html">About</a>
-    </div>
-
+        <div class="mainNav">
+            <a href="..\index.html">Home</a>
+            <a href=".\projects.html">Projects</a>
+            <a href=".\experience.html">Work Experience</a>
+            <a href=".\education.html">Education</a>
+            <a href=".\about.html">About</a>
+        </div>
+        <div class="margins">
+            <ul style="list-style-type: none;">
+        
+                <li>
+                    <h2>BlueCat Networks, Toronto ON</h2>
+                    <div style="margin-left: 40px;" class="pSpacing">
+                        <h4>
+                            IT Technician Co-Op (Full-time contract) | May 2022 - April 2023<br>
+                            IT Technician (Part-time contract) | May 2023 - Aug 2023
+                        </h4>
+                        <button type="button" class="collapsible" style="position:relative; bottom:20px; padding:10px">Details</button>
+                        <div class="content">
+                            <ul>
+                                <li>Training new colleagues on the basics of IT systems (e.g mobile device management, hardware upgrade protocol, ticketing system, etc.)</li>
+                                <li>Self-teaching and writing a Powershell and Bash script that automates the computer offboarding process, speeding up the process by up to 90%</li>
+                                <li>Writing a Bash script that automates the setup and configuration of Ubuntu</li>
+                                <li>Collaborating with colleagues to remotely migrate hundreds of Windows machines onto the Intune Mobile Device Manager (MDM)</li>
+                                <li>Locally and remotely set up and deploy machines to new and returning employees around the world</li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+        
+                <li>
+                    <h2>Chartwell Retirement Residences, Mississauga ON</h2>
+                    <div style="margin-left: 40px;" class="pSpacing">
+                        <h4>
+                            IT HelpDesk Summer Student (Full-time contract) | May 2019 - August 2019
+                        </h4>
+                        <button type="button" class="collapsible" style="position:relative; bottom:20px; padding:10px">Details</button>
+                        <div class="content">
+                            <ul>
+                                <li>Self-taught PowerShell scripting to create a function that remotely checks the encryption status of multiple company PCs</li>
+                                <li>Collaborating with coworkers to remotely upgrade all company PCs across Canada to Windows 10</li>
+                                <li>Resolving customer support tickets related to hardware and software issues</li>
+                                <li>Provisioning computers and configuring software for new employees</li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+        
+            </ul>
+        
+        </div>
+        <script>
+            var coll = document.getElementsByClassName("collapsible");
+            var i;
+            
+            for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                content.style.display = "none";
+                } else {
+                content.style.display = "block";
+                }
+            });
+            }
+        </script>
 
     </body>
 </html>
