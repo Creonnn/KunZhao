@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+        <link rel="stylesheet" href="..\css\style.css">
+        <!-- Renders LaTeX -->
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        
+        <title>Profile</title>
+    </head>
+    <body>
+        <div class="mainNav">
+            <a href="..\index.html">Home</a>
+            <a href=".\projects.html">Projects</a>
+            <a href=".\experience.html">Work Experience</a>
+            <a href=".\education.html">Education</a>
+            <a href=".\about.html">About</a>
+        </div>
+        <div class="tableOfContents">
+            <ul>
+                <li><a href="#intro"><big><b><p>Intro</p></b></big></a></li>
+                <li><a href="#tools"><big><b><p>Tools</p></b></big></a></li>
+                <li><a href="#process"><big><b><p>Process</p></b></big></a></li>
+                <ul>
+                    <li><a href="#question1"><big><b><p>Question 1</p></b></big></a></li>
+                    <li><a href="#question2"><big><b><p>Question 2</p></b></big></a></li>
+                    <li><a href="#question3"><big><b><p>Question 3</p></b></big></a></li>
+                </ul>
+                <br>
+                <li><a href="#"><big><b><p>Top &#8613</p></b></big></a></li>
+            </ul>
+        </div>
+        <div class="margins">
+            <h1>Data Analysis Job Market</h1>
+            <small>Published on: 8/21/2023</small>
+            <hr color="black">
+
+            <h2 id="intro"><strong>Intro</strong></h2>
+
+            <p>This was an introductory project for myself just to practice using common python modules for data analysis which will be listed below. The dataset that I used was from Kaggle (I forgot the link) which describes the Data Science job market from around the world.</p>
+
+            <p>Here, I attempt to answer these three questions:</p>
+
+            <ol>
+                <li>What&#39;s the average income per job type (e.g. Full time, part time)?</li>
+                <li>What&#39;s the average income per experience level (e.g. Entry-level, Mid-level, Senior level, etc.)?</li>
+                <li>Which country pays the most?</li>
+            </ol>
+
+            <h2 id="tools"><strong>Tools</strong></h2>
+
+            <ul>
+                <li>Google Colab</li>
+                <li>Python</li>
+                <li>numpy</li>
+                <li>pandas</li>
+                <li>matplotlib</li>
+            </ul>
+
+            <h2 id="process"><strong>Process</strong></h2>
+
+            <p>We begin by importing the data.</p>
+
+            <p><code>&gt;&gt;&gt;df = pd.read_csv(&quot;data_science_job.csv&quot;, encoding=&quot;ISO-8859-1&quot;)</code></p>
+
+
+            <p>To answer the three questions, we will need to clean these columns:</p>
+
+            <ol>
+                <li>Location</li>
+                <li>Job Type</li>
+                <li>Experience Level</li>
+                <li>Salary</li>
+            </ol>
+
+            <p>Starting with the location, we first convert the column data type to&nbsp;<code>string.</code></p>
+
+            <p><code>&gt;&gt;&gt;df[&#39;Location&#39;] = df[&#39;Location&#39;].astype(&quot;string&quot;)</code></p>
+
+            <p>Since the Location column contains the city, state/province, and country, we need to somehow extract just the country name. However, for some of the data points, the location sometimes did not reference a country. E.g., some were listed as remote, remote/hybrid, some listed multiple countries (very few data points were like this), etc.</p>
+
+            <p>In order to remove these data points, I will need to reference a list that contains all country names in order to confirm the validity of these Location entries.&nbsp;<em>The list was shortened to save space.</em></p>
+
+            <p><code>&gt;&gt;&gt;all_countries = [&#39;Afghanistan&#39;, &#39;Aland Islands&#39;, &#39;Albania&#39;, &#39;Algeria&#39;, &#39;American Samoa&#39;, &#39;Andorra&#39;, &#39;Angola&#39;,..., &#39;Yemen&#39;, &#39;Zambia&#39;, &#39;Zimbabwe&#39;]</code></p>
+
+            <p><code>&gt;&gt;&gt;all_countries = [country.upper() for country in all_countries]</code></p>
+
+            <p>Now that we have a list of standardized country names that we can use for reference, we now begin to compile a list of row indices which contains an invalid country name under Location so that we can later delete those row by index.</p>
+
+            <p><code>&gt;&gt;&gt;rows_to_delete = []</code></p>
+
+            <p><code>&gt;&gt;&gt;for index, row in df.iterrows():</code></p>
+
+            <p><code>&nbsp; &nbsp; &nbsp; &nbsp;country = row[&#39;Location&#39;].split(&#39;,&#39;)[-1].strip().upper()</code></p>
+
+            <p><code>&nbsp; &nbsp; &nbsp; &nbsp;if country not in all_countries:</code></p>
+
+            <p><code>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;rows_to_delete.append(index)</code></p>
+
+            <p><code>&gt;&gt;&gt;df.drop(rows_to_delete, inplace=True)</code></p>
+
+            <p>Now we create a new column named Country and populate it accorgingly.</p>
+
+            <p><code>&gt;&gt;&gt;df[&quot;Country&quot;] = np.nan</code></p>
+
+            <p><code>&gt;&gt;&gt;for index, row in df.iterrows():</code></p>
+
+            <p><code>&nbsp; &nbsp; &nbsp; &nbsp;country = row[&#39;Location&#39;].split(&#39;,&#39;)[-1].strip().upper()</code></p>
+
+            <p><code>&nbsp; &nbsp; &nbsp; &nbsp;df.at[index, &quot;Country&quot;] = country</code></p>
+
+            <p>The Job Type column was overall pretty clean. But to make sure, we will drop any null values as well as convert the data type to string.</p>
+
+            <p><code>&gt;&gt;&gt;df = df[df[&#39;Job Type&#39;].notna()]</code></p>
+
+            <p><code>&gt;&gt;&gt;df[&#39;Job Type&#39;] = df[&#39;Job Type&#39;].astype(&quot;string&quot;)</code></p>
+
+            <p>Similarly, the Expereince level column was also pretty clean. Though there were some null values (just a handful), I thought it would be best to convert the null values to &quot;Other&quot;.</p>
+
+            <p><code>&gt;&gt;&gt;df[&#39;Experience level&#39;].fillna(&#39;Other&#39;, inplace=True)</code></p>
+
+            <p>Lastly, to clean the Salary column, there&#39;s a few things we need to do. We need to remove the letters and special characters, remove null values, and convert the data type to integer.</p>
+
+            <p><code>&gt;&gt;&gt;df[&#39;Salary&#39;] = df[&#39;Salary&#39;].replace(&#39;[A-Za-z+*]&#39;, &#39;&#39;, regex=True)</code></p>
+
+            <p><code>&gt;&gt;&gt;df[&#39;Salary&#39;].isnull().values.any()</code></p>
+
+            <p><code>&gt;&gt;&gt;df = df[df[&#39;Salary&#39;].notna()]</code></p>
+
+            <p><code>&gt;&gt;&gt;df[&#39;Salary&#39;] = df[&#39;Salary&#39;].astype(int)</code></p>
+
+            <p>Now that we&#39;ve cleaned all the relevant columns, we can begin to answer the questions.</p>
+
+            <h3 id="question1"><strong>Question 1:&nbsp;What&#39;s the average income per job type (e.g. Full time, part time)?</strong></h3>
+
+            <p>First, we need to create a dictionary where we will store the job type averages. Here, the key will be the job type and the value will be the average income.</p>
+
+            <p><code>&gt;&gt;&gt;job_types = df[&#39;Job Type&#39;].unique()</code></p>
+
+            <p><code>&gt;&gt;&gt;averages_job_type={job_type: 0 for job_type in job_types}</code></p>
+
+            <p>Next, we sum up all the salaries corresponding to the job type.</p>
+
+            <p><code>&gt;&gt;&gt;for index, row in df.iterrows():</code></p>
+
+            <p><code>&nbsp; &nbsp; &nbsp; &nbsp;averages_job_type[row[&#39;Job Type&#39;]] += row[&quot;Salary&quot;]</code></p>
+
+            <p>Finally, we can calculate the average and present our findings.</p>
+
+            <p><code>&gt;&gt;&gt;for x in averages_job_type:</code></p>
+
+            <p><code>&nbsp; &nbsp; &nbsp; &nbsp;averages_job_type[x] = int(averages_job_type[x] / len(df[df[&#39;Job Type&#39;] == x]))</code></p>
+
+            <p><code>&gt;&gt;&gt;averages_job_type</code></p>
+
+            <p><code>{&#39;Full Time&#39;: 85, &#39;Part Time&#39;: 56}</code></p>
+
+            <p>We can represent as a bar graph.&nbsp;</p>
+
+            <p><code>&gt;&gt;&gt;xpoints = np.array(list(averages_job_type.keys()))</code></p>
+
+            <p><code>&gt;&gt;&gt;ypoints = np.array(list(averages_job_type.values()))</code></p>
+
+            <p><code>&gt;&gt;&gt;plt.bar(xpoints, ypoints)</code></p>
+
+            <p><code>&gt;&gt;&gt;plt.xlabel(&quot;Job Type&quot;)</code></p>
+
+            <p><code>&gt;&gt;&gt;plt.ylabel(&quot;Average Salary (k USD)&quot;)</code></p>
+
+            <p><code>&gt;&gt;&gt;plt.title(&quot;Data analysis job average salary per Job Type&quot;)</code></p>
+
+            <p><img alt="" src="https://i.imgur.com/WHRp5x9.png"/></p>
+
+            <h3 id="question2"><strong>Question 2:&nbsp;What&#39;s the average income per experience level (e.g. Entry-level, Mid-level, Senior level, etc.)?</strong></h3>
+
+            <p>Similar to the previous question, we create a dictionary where the key is the experience level and the corresponding value is the average salary.</p>
+
+            <p><code>&gt;&gt;&gt;experience_levels = df[&quot;Experience level&quot;].unique()</code></p>
+
+            <p><code>&gt;&gt;&gt;averages_experience_level={levels: 0 for levels in experience_levels}</code></p>
+
+            <p>Then we total the salary corresponding to the experience level.</p>
+
+            <p><code>&gt;&gt;&gt;for index, row in df.iterrows():</code></p>
+
+            <p><code>&nbsp; &nbsp; &nbsp; &nbsp;averages_experience_level[row[&quot;Experience level&quot;]] += row[&quot;Salary&quot;]</code></p>
+
+            <p>Finally, we compute the average and share the results.</p>
+
+            <p><code>&gt;&gt;&gt;for x in averages_experience_level:</code></p>
+
+            <p><code>&nbsp; &nbsp; &nbsp; &nbsp;averages_experience_level[x] = int(averages_experience_level[x]/len(df[df[&#39;Experience level&#39;] == x]))</code></p>
+
+            <p><code>&gt;&gt;&gt;xpoints = np.array(list(averages_experience_level.keys()))</code></p>
+
+            <p><code>&gt;&gt;&gt;ypoints = np.array(list(averages_experience_level.values()))</code></p>
+
+            <p><code>&gt;&gt;&gt;plt.bar(xpoints, ypoints)</code></p>
+
+            <p><code>&gt;&gt;&gt;plt.xlabel(&quot;Experience level&quot;)</code></p>
+
+            <p><code>&gt;&gt;&gt;plt.ylabel(&quot;Salary (k USD)&quot;)</code></p>
+
+            <p><code>&gt;&gt;&gt;plt.title(&quot;Data analysis job average salary per experience level&quot;)</code></p>
+
+            <p><code>&gt;&gt;&gt;plt.xticks(rotation = 45)</code></p>
+
+            <p><code>&gt;&gt;&gt;plt.grid(axis=&#39;y&#39;)</code></p>
+
+            <p><code>&gt;&gt;&gt;plt.show()</code></p>
+
+            <p><img alt="" src="https://i.imgur.com/5ctMtNE.png"/></p>
+
+            <h3 id="question3"><strong>Question 3:&nbsp;Which country pays the most?</strong></h3>
+
+            <p>We create a dictionary with country as the key and the corresponding average salary as its value.</p>
+
+            <p><code>&gt;&gt;&gt;average_per_country = {country: 0 for country in countries}</code></p>
+
+            <p>Total all the salaries.</p>
+
+            <p><code>&gt;&gt;&gt;for index, row in df.iterrows():</code></p>
+
+            <p><code>&nbsp; &nbsp; &nbsp; &nbsp;average_per_country[row[&#39;Location&#39;].split(&#39;,&#39;)[-1].strip().upper()] += row[&#39;Salary&#39;]</code></p>
+
+            <p>Compute the average.</p>
+
+            <p><code>&gt;&gt;&gt;for x in average_per_country:</code></p>
+
+            <p><code>&nbsp; &nbsp; &nbsp; &nbsp;average_per_country[x] = int(average_per_country[x] / len(df[df[&#39;Country&#39;] == x]))</code></p>
+
+            <p>Share the results.</p>
+
+            <p>&gt;&gt;&gt;<code>max(average_per_country, key=average_per_country.get)</code></p>
+
+            <p><code>&#39;AUSTRIA&#39;</code></p>
+
+            <p>Though I don&#39;t believe this output is completely accurate because the amount of samples we&#39;re using for each country are not equal. Though cleaning the data to answer this question was by far the most challanging out of everything -- which made it worth while.</p>
+        </div>
+    </body>
+</html>
