@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+        <link rel="stylesheet" href="..\css\style.css">
+        <!-- Renders LaTeX -->
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        
+        <title>Profile</title>
+    </head>
+    <body>
+        <div class="mainNav">
+            <a href="..\index.html">Home</a>
+            <a href=".\projects.html">Projects</a>
+            <a href=".\experience.html">Work Experience</a>
+            <a href=".\education.html">Education</a>
+            <a href=".\about.html">About</a>
+        </div>
+        <div class="tableOfContents">
+            <ul>
+                <li><a href="#intro"><big><b><p>Intro</p></b></big></a></li>
+                <li><a href="#tools"><big><b><p>Tools</p></b></big></a></li>
+                <li><a href="#process"><big><b><p>Process</p></b></big></a></li>
+                <ul>
+                    <li><a href="#question1"><big><b><p>Question 1</p></b></big></a></li>
+                    <li><a href="#question2"><big><b><p>Question 2</p></b></big></a></li>
+                    <li><a href="#question3"><big><b><p>Question 3</p></b></big></a></li>
+                </ul>
+                <br>
+                <li><a href="#"><big><b><p>Top &#8613</p></b></big></a></li>
+            </ul>
+        </div>
+        <div class="margins">
+            <h1>An intro to Neural Networks | MNIST Digit Classification</h1>
+            <small>Published on: 8/21/2023</small>
+            <hr color="black">
+
+
+            <h2><strong>Intro</strong></h2>
+
+            <p>I will be constructing a neural network without using any machine learning modules (Tensor Flow, PyTorch, etc). This project will focus on the mathematics behind the layers and optimization. This neural network will attempt to classify hand-written digits. The data set I used can be found <a href="https://www.kaggle.com/competitions/digit-recognizer/data" target="_blank">here</a>. Resources that helped guide me through this process can be found at the end of this post.</p>
+
+            <h2><strong>Tools</strong></h2>
+
+            <ul>
+                <li>Python</li>
+                <li>Google Colab</li>
+                <li>pandas</li>
+                <li>numpy</li>
+            </ul>
+
+            <hr />
+            <h2><strong>The Math for Forward Propagation</strong></h2>
+
+            <p>The math that makes everything work was probably the hardest aspect of this project -- likely because I haven&#39;t done pure calculus nor algebra in a while. However, it was well worth the time spent to understand the nuances of the math. There will be a ton of variables to keep track of indices and I will try my best to keep track of them so you don&#39;t forget what they are mid-way.</p>
+
+            <p>We begin by constructing the structure of the neural network -- the forward propagation.</p>
+
+            <p>Each image is \(28\times28=784\) pixels, so let \(x^{(i)}\) be a vector of length \(784\) which represents the pixels of the \(i^{th}\) image.</p>
+
+            <h5><em>Note: each pixel is a value between \([0,1]\) where \(0\) is white and \(1\) is black.</em></h5>
+
+            <p>Let \(m=\) number of training images.</p>
+
+            <p>Now we can define all our training images as a matrix as follows:</p>
+
+            <p>\(X=\begin{bmatrix}x^{(1)}&amp;x^{(2)}&amp;...&amp;x^{(m)}\end{bmatrix}\)</p>
+
+            <p>We will have ten classes: \([0,1,2,3,4,5,6,7,8,9]\), ie. all the possible digits.</p>
+
+            <p>We will use 3 layers: The input layer (784 neurons), two hidden layers (10 neurons each), and the output layer (10 neurons).</p>
+
+            <p>The input layer -- exactly how is sounds -- will be \(x^{(i)}\), one of the images.&nbsp;</p>
+
+            <p>The hidden layers will apply a linear transformation and an activation function on the neurons from the preceding layer.</p>
+
+            <p>Finally, the output layer will use output from the previous layer to classify the digit.</p>
+
+            <hr />
+            <h3><strong>First hidden layer</strong></h3>
+
+            <p>We define the following:</p>
+
+            <p>Let \(A^{[0]}_{784\times m} = X_{784\times m}\) be the input layer.&nbsp;</p>
+
+            <p>Let \(Z^{[1]}_{10\times m}=w^{[1]}_{10\times 784}A^{[0]}_{784\times m}+b^{[1]}_{10\times1}\)</p>
+
+            <p>where</p>
+
+            <ul>
+                <li>\(Z^{[1]}_{10\times m}\) is the unactivated neurons of the first hidden layer</li>
+                <li>\(w^{[1]}_{10\times 784}\) is the weights matrix of the first hidden layer</li>
+                <li>\(b^{[1]}_{10\times1}\) is the biases matrix of the first hidden layer</li>
+            </ul>
+
+            <p>We will be using the Rectified Linear Unit (ReLU) function as the activation function for the first hidden layer. It is defined as follows:</p>
+
+            <p>\(ReLU(x)=\begin{cases}x&amp;x&gt;0\\0&amp;x\leq 0\end{cases}\)</p>
+
+            <p>Thus, let&#39;s define:</p>
+
+            <p>Let \(A^{[1]}=g(Z^{[1]})=ReLU(Z^{[1]})\)&nbsp;</p>
+
+            <p>where</p>
+
+            <ul>
+                <li>\(A^{[1]}\) is the activated neurons of the first hidden layer</li>
+                <li>\(g\) is the ReLU function</li>
+            </ul>
+
+            <hr />
+            <h3><strong>Second hidden layer</strong></h3>
+
+            <p>Similar to the first hidden layer, we define the following:</p>
+
+            <p>Let&nbsp;\(Z^{[2]}_{10\times m}=w^{[2]}_{10\times 10}A^{[1]}_{10\times m}+b^{[2]}_{10\times1}\)</p>
+
+            <p>where</p>
+
+            <ul>
+                <li>\(Z^{[2]}_{10\times m}\) is the unactivated neurons of the&nbsp;second&nbsp;hidden layer</li>
+                <li>\(w^{[2]}_{10\times 10}\) is the weights matrix of the second hidden layer</li>
+                <li>\(A^{[1]}\) is the activated neurons from&nbsp;the first hidden layer</li>
+                <li>\(b^{[2]}_{10\times1}\) is the biases matrix of the second&nbsp;hidden layer</li>
+            </ul>
+
+            <p>We will be using the Softmax function as the activation function for the second hidden layer. It is defined as follows:</p>
+
+            <p>\(softmax(X)=\frac{e^{x_i}}{\sum_{j=1}^{k}e^{x_j}}\)</p>
+
+            <p>where</p>
+
+            <ul>
+                <li>\(X\) is a vector of length \(k\)</li>
+                <li>\(x_{i}\) is the \(i^{th}\) element of the vector \(X\)</li>
+            </ul>
+
+            <p>Thus, let&#39;s define:</p>
+
+            <p>Let \(A^{[2]}=\)\(softmax(Z^{[2]})\)&nbsp;</p>
+
+            <p>where</p>
+
+            <ul>
+                <li>&nbsp;\(A^{[2]}\) is the activated neurons of the second hidden layer&nbsp;</li>
+                <li>\(Z^{[2]}\) is the unactivated neurons of the second hidden layer</li>
+            </ul>
+
+            <hr />
+            <h3><strong>Output layer</strong></h3>
+
+            <p>The second hidden layer essentially spits out a vector of probabilities. So, the output layer will take the maximum value from that vector and classify the image based on the index of that maximum value.</p>
+
+            <p>For example, suppose we have the following:</p>
+
+            <p>\([0.1,0.1,0.1,0.3,0.4,0,0,0,0,0]\) -- the probabilities vector from second hidden layer.</p>
+
+            <p>Then our output layer will return \(4\) because the maximum of that vector is \(0.4\) located at index \(4\).</p>
+
+            <hr />
+            <h2><strong>The Math for Backwards Propagation</strong></h2>
+
+            <p>When we begin the forward propagation process, the weight and biases are chosen at random within a given interval. Our job now after each epoch, we will need to optimize each weights and biases such that we minimize the error. Since this model contains multiple classes (10 to be exact), we will use Categorical Cross Entropy as our cost function.</p>
+
+            <p>Categorical Cross Entropy is defined as follows:</p>
+
+            <p>\(L_i=-\sum_j y_{ij}ln(\hat{y}_{ij})\)</p>
+
+            <p>where</p>
+
+            <ul>
+                <li>\(L_i=\)sample cost value</li>
+                <li>\(y_{ij}=\)\(j^{th}\) output index of the \(i^{th}\) sample</li>
+                <li>\(y=\)target values, one-hot encoded</li>
+                <li>\(\hat(y)=\)predicted values</li>
+            </ul>
+
+            <p>Due to the one-hot encoding of \(y\), our cost function simplifies to:</p>
+
+            <p>\(L_i=-ln(\hat{y}_{ik})\) where \(k=\)target class.</p>
+
+            <p>Note: Why Categorical Cross Entropy work well for this model?</p>
+
+            <p>This is due to the behaviour of the \(log\) function.</p>
+
+            <p>e.g. Let \(f(x)=-ln(x)\), where \(x\in (0,1]\)</p>
+
+            <p>&nbsp; &nbsp; &nbsp; &nbsp;As \(x\rightarrow 0\), \(f(x)\rightarrow\infty\)</p>
+
+            <p>&nbsp; &nbsp; &nbsp; &nbsp;In plain English, as our probability decreases for the prediction of our target class, our error increases.</p>
+
+            <p>&nbsp; &nbsp; &nbsp; &nbsp;As&nbsp;\(x\rightarrow 1\), \(f(x)\rightarrow 0\)</p>
+
+            <p>&nbsp; &nbsp; &nbsp; &nbsp;As our probability increases for the prediction of our target class, our error decreases.</p>
+
+            <h3><strong>Deriving the error function for the output layer</strong></h3>
+
+            <p>&nbsp;</p>
+
+            <p>&nbsp;</p>
+
+            <p>&nbsp;</p>
+
+            <p>&nbsp;</p>
+
+            <p>&nbsp;</p>
+
+            <p>&nbsp;</p>
+
+            <p>&nbsp;</p>
+
+            <p>&nbsp;</p>
+
+            <p>&nbsp;</p>
+
+            <p>&nbsp;</p>
+
+            <p>&nbsp;</p>
+
+            <p>&nbsp;</p>
+
+            <p>&nbsp;</p>
+        </div>
+    </body>
+</html>
