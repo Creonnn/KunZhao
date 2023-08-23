@@ -3,9 +3,12 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
         <link rel="stylesheet" href="..\css\style.css">
+
+        <link rel="stylesheet" href="..\css\styles\github-dark.min.css"/>
+        <script src="..\css\highlight.min.js"></script>
+        <script>hljs.highlightAll();</script>
+
         <!-- Renders LaTeX -->
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
         <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -34,7 +37,7 @@
                 <li><a href="#"><big><b><p>Top &#8613</p></b></big></a></li>
             </ul>
         </div>
-        <div class="margins">
+        <div class="post">
             <h1>Data Analysis Job Market</h1>
             <small>Published on: 8/21/2023</small>
             <hr color="black">
@@ -42,7 +45,7 @@
             <h2 id="intro"><strong>Intro</strong></h2>
 
             <p>This was an introductory project for myself just to practice using common python modules for data analysis which will be listed below. The dataset that I used was from Kaggle (I forgot the link) which describes the Data Science job market from around the world.</p>
-
+            <p style="color:red">Note: For all three questions, I later found out that there's a better way to summarize the data using pandas query. It will be shown in red.</p>
             <p>Here, I attempt to answer these three questions:</p>
 
             <ol>
@@ -65,7 +68,7 @@
 
             <p>We begin by importing the data.</p>
 
-            <p><code>&gt;&gt;&gt;df = pd.read_csv(&quot;data_science_job.csv&quot;, encoding=&quot;ISO-8859-1&quot;)</code></p>
+            <p><pre><code>&gt;&gt;&gt;df = pd.read_csv(&quot;data_science_job.csv&quot;, encoding=&quot;ISO-8859-1&quot;)</code></pre></p>
 
 
             <p>To answer the three questions, we will need to clean these columns:</p>
@@ -79,59 +82,59 @@
 
             <p>Starting with the location, we first convert the column data type to&nbsp;<code>string.</code></p>
 
-            <p><code>&gt;&gt;&gt;df[&#39;Location&#39;] = df[&#39;Location&#39;].astype(&quot;string&quot;)</code></p>
+            <p><pre><code>&gt;&gt;&gt;df[&#39;Location&#39;] = df[&#39;Location&#39;].astype(&quot;string&quot;)</code></pre></p>
 
             <p>Since the Location column contains the city, state/province, and country, we need to somehow extract just the country name. However, for some of the data points, the location sometimes did not reference a country. E.g., some were listed as remote, remote/hybrid, some listed multiple countries (very few data points were like this), etc.</p>
 
             <p>In order to remove these data points, I will need to reference a list that contains all country names in order to confirm the validity of these Location entries.&nbsp;<em>The list was shortened to save space.</em></p>
 
-            <p><code>&gt;&gt;&gt;all_countries = [&#39;Afghanistan&#39;, &#39;Aland Islands&#39;, &#39;Albania&#39;, &#39;Algeria&#39;, &#39;American Samoa&#39;, &#39;Andorra&#39;, &#39;Angola&#39;,..., &#39;Yemen&#39;, &#39;Zambia&#39;, &#39;Zimbabwe&#39;]</code></p>
+            <p><pre><code>&gt;&gt;&gt;all_countries = ['Afghanistan', 'Aland Islands', 'Albania', 'Algeria', 'American Samoa', 'Andorra', 'Angola', 'Anguilla', 'Antarctica', 'Antigua and Barbuda', 'Argentina', 'Armenia', 'Aruba', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bermuda', 'Bhutan', 'Bolivia, Plurinational State of', 'Bonaire, Sint Eustatius and Saba', 'Bosnia and Herzegovina', 'Botswana', 'Bouvet Island', 'Brazil', 'British Indian Ocean Territory', 'Brunei Darussalam', 'Bulgaria', 'Burkina Faso', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Cayman Islands', 'Central African Republic', 'Chad', 'Chile', 'China', 'Christmas Island', 'Cocos (Keeling) Islands', 'Colombia', 'Comoros', 'Congo', 'Congo, The Democratic Republic of the', 'Cook Islands', 'Costa Rica', "Côte d'Ivoire", 'Croatia', 'Cuba', 'Curaçao', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Falkland Islands (Malvinas)', 'Faroe Islands', 'Fiji', 'Finland', 'France', 'French Guiana', 'French Polynesia', 'French Southern Territories', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Gibraltar', 'Greece', 'Greenland', 'Grenada', 'Guadeloupe', 'Guam', 'Guatemala', 'Guernsey', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Heard Island and McDonald Islands', 'Holy See (Vatican City State)', 'Honduras', 'Hong Kong', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran, Islamic Republic of', 'Iraq', 'Ireland', 'Isle of Man', 'Israel', 'Italy', 'Jamaica', 'Japan', 'Jersey', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', "Korea, Democratic People's Republic of", 'Korea, Republic of', 'Kuwait', 'Kyrgyzstan', "Lao People's Democratic Republic", 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macao', 'Macedonia, Republic of', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Martinique', 'Mauritania', 'Mauritius', 'Mayotte', 'Mexico', 'Micronesia, Federated States of', 'Moldova, Republic of', 'Monaco', 'Mongolia', 'Montenegro', 'Montserrat', 'Morocco', 'Mozambique', 'Myanmar', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Caledonia', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Niue', 'Norfolk Island', 'Northern Mariana Islands', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Palestinian Territory, Occupied', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Pitcairn', 'Poland', 'Portugal', 'Puerto Rico', 'Qatar', 'Réunion', 'Romania', 'Russian Federation', 'Rwanda', 'Saint Barthélemy', 'Saint Helena, Ascension and Tristan da Cunha', 'Saint Kitts and Nevis', 'Saint Lucia', 'Saint Martin (French part)', 'Saint Pierre and Miquelon', 'Saint Vincent and the Grenadines', 'Samoa', 'San Marino', 'Sao Tome and Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Sint Maarten (Dutch part)', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Georgia and the South Sandwich Islands', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'South Sudan', 'Svalbard and Jan Mayen', 'Swaziland', 'Sweden', 'Switzerland', 'Syrian Arab Republic', 'Taiwan, Province of China', 'Tajikistan', 'Tanzania, United Republic of', 'Thailand', 'Timor-Leste', 'Togo', 'Tokelau', 'Tonga', 'Trinidad and Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Turks and Caicos Islands', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'United States Minor Outlying Islands', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Venezuela, Bolivarian Republic of', 'Vietnam', 'Virgin Islands, British', 'Virgin Islands, U.S.', 'Wallis and Futuna', 'Yemen', 'Zambia', 'Zimbabwe']
 
-            <p><code>&gt;&gt;&gt;all_countries = [country.upper() for country in all_countries]</code></p>
+&gt;&gt;&gt;all_countries = [country.upper() for country in all_countries]</code></pre></p>
 
             <p>Now that we have a list of standardized country names that we can use for reference, we now begin to compile a list of row indices which contains an invalid country name under Location so that we can later delete those row by index.</p>
 
-            <p><code>&gt;&gt;&gt;rows_to_delete = []</code></p>
+            <p><pre><code>&gt;&gt;&gt;rows_to_delete = []
 
-            <p><code>&gt;&gt;&gt;for index, row in df.iterrows():</code></p>
+&gt;&gt;&gt;for index, row in df.iterrows():
 
-            <p><code>&nbsp; &nbsp; &nbsp; &nbsp;country = row[&#39;Location&#39;].split(&#39;,&#39;)[-1].strip().upper()</code></p>
+&nbsp; &nbsp; &nbsp; &nbsp;country = row[&#39;Location&#39;].split(&#39;,&#39;)[-1].strip().upper()
 
-            <p><code>&nbsp; &nbsp; &nbsp; &nbsp;if country not in all_countries:</code></p>
+&nbsp; &nbsp; &nbsp; &nbsp;if country not in all_countries:
 
-            <p><code>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;rows_to_delete.append(index)</code></p>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;rows_to_delete.append(index)
 
-            <p><code>&gt;&gt;&gt;df.drop(rows_to_delete, inplace=True)</code></p>
+&gt;&gt;&gt;df.drop(rows_to_delete, inplace=True)</code></pre></p>
 
             <p>Now we create a new column named Country and populate it accorgingly.</p>
 
-            <p><code>&gt;&gt;&gt;df[&quot;Country&quot;] = np.nan</code></p>
+            <p><pre><code>&gt;&gt;&gt;df[&quot;Country&quot;] = np.nan
 
-            <p><code>&gt;&gt;&gt;for index, row in df.iterrows():</code></p>
+&gt;&gt;&gt;for index, row in df.iterrows():
 
-            <p><code>&nbsp; &nbsp; &nbsp; &nbsp;country = row[&#39;Location&#39;].split(&#39;,&#39;)[-1].strip().upper()</code></p>
+&nbsp; &nbsp; &nbsp; &nbsp;country = row[&#39;Location&#39;].split(&#39;,&#39;)[-1].strip().upper()
 
-            <p><code>&nbsp; &nbsp; &nbsp; &nbsp;df.at[index, &quot;Country&quot;] = country</code></p>
+&nbsp; &nbsp; &nbsp; &nbsp;df.at[index, &quot;Country&quot;] = country</code></pre></p>
 
             <p>The Job Type column was overall pretty clean. But to make sure, we will drop any null values as well as convert the data type to string.</p>
 
-            <p><code>&gt;&gt;&gt;df = df[df[&#39;Job Type&#39;].notna()]</code></p>
+            <p><pre><code>&gt;&gt;&gt;df = df[df[&#39;Job Type&#39;].notna()]
 
-            <p><code>&gt;&gt;&gt;df[&#39;Job Type&#39;] = df[&#39;Job Type&#39;].astype(&quot;string&quot;)</code></p>
+&gt;&gt;&gt;df[&#39;Job Type&#39;] = df[&#39;Job Type&#39;].astype(&quot;string&quot;)</code></pre></p>
 
             <p>Similarly, the Expereince level column was also pretty clean. Though there were some null values (just a handful), I thought it would be best to convert the null values to &quot;Other&quot;.</p>
 
-            <p><code>&gt;&gt;&gt;df[&#39;Experience level&#39;].fillna(&#39;Other&#39;, inplace=True)</code></p>
+            <p><pre><code>&gt;&gt;&gt;df[&#39;Experience level&#39;].fillna(&#39;Other&#39;, inplace=True)</code></pre></p>
 
             <p>Lastly, to clean the Salary column, there&#39;s a few things we need to do. We need to remove the letters and special characters, remove null values, and convert the data type to integer.</p>
 
-            <p><code>&gt;&gt;&gt;df[&#39;Salary&#39;] = df[&#39;Salary&#39;].replace(&#39;[A-Za-z+*]&#39;, &#39;&#39;, regex=True)</code></p>
+            <p><pre><code>&gt;&gt;&gt;df[&#39;Salary&#39;] = df[&#39;Salary&#39;].replace(&#39;[A-Za-z+*]&#39;, &#39;&#39;, regex=True)
 
-            <p><code>&gt;&gt;&gt;df[&#39;Salary&#39;].isnull().values.any()</code></p>
+&gt;&gt;&gt;df[&#39;Salary&#39;].isnull().values.any()
 
-            <p><code>&gt;&gt;&gt;df = df[df[&#39;Salary&#39;].notna()]</code></p>
+&gt;&gt;&gt;df = df[df[&#39;Salary&#39;].notna()]
 
-            <p><code>&gt;&gt;&gt;df[&#39;Salary&#39;] = df[&#39;Salary&#39;].astype(int)</code></p>
+&gt;&gt;&gt;df[&#39;Salary&#39;] = df[&#39;Salary&#39;].astype(int)</code></pre></p>
 
             <p>Now that we&#39;ve cleaned all the relevant columns, we can begin to answer the questions.</p>
 
