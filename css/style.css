@@ -108,3 +108,12 @@ code{
 .post p {
     line-height: 1.7;
 }
+
+.post ul {
+    line-height: 1.7;
+    list-style-type: disc;
+}
+
+table, th, td {
+    border:1px solid black;
+  }

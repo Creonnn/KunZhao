@@ -5,8 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="..\css\style.css">
 
-        <link rel="stylesheet" href="..\css\styles\github-dark.min.css"/>
-        <script src="..\css\highlight.min.js"></script>
+        <link rel="stylesheet" href="..\packages\highlightjs\styles\github-dark.min.css"/>
+        <script src="..\packages\highlightjs\highlight.min.js"></script>
         <script>hljs.highlightAll();</script>
 
         <!-- Renders LaTeX -->
@@ -45,7 +45,6 @@
             <h2 id="intro"><strong>Intro</strong></h2>
 
             <p>This was an introductory project for myself just to practice using common python modules for data analysis which will be listed below. The dataset that I used was from Kaggle (I forgot the link) which describes the Data Science job market from around the world.</p>
-            <p style="color:red">Note: For all three questions, I later found out that there's a better way to summarize the data using pandas query. It will be shown in red.</p>
             <p>Here, I attempt to answer these three questions:</p>
 
             <ol>
@@ -59,7 +58,6 @@
             <ul>
                 <li>Google Colab</li>
                 <li>Python</li>
-                <li>numpy</li>
                 <li>pandas</li>
                 <li>matplotlib</li>
             </ul>
@@ -130,8 +128,6 @@
 
             <p><pre><code>&gt;&gt;&gt;df[&#39;Salary&#39;] = df[&#39;Salary&#39;].replace(&#39;[A-Za-z+*]&#39;, &#39;&#39;, regex=True)
 
-&gt;&gt;&gt;df[&#39;Salary&#39;].isnull().values.any()
-
 &gt;&gt;&gt;df = df[df[&#39;Salary&#39;].notna()]
 
 &gt;&gt;&gt;df[&#39;Salary&#39;] = df[&#39;Salary&#39;].astype(int)</code></pre></p>
@@ -140,109 +136,64 @@
 
             <h3 id="question1"><strong>Question 1:&nbsp;What&#39;s the average income per job type (e.g. Full time, part time)?</strong></h3>
 
-            <p>First, we need to create a dictionary where we will store the job type averages. Here, the key will be the job type and the value will be the average income.</p>
+            <p>We can easily answer this question by using pandas query</p>
+            <p><pre><code>>>>averages_job_type_df = df.groupby(['Job Type'])['Salary']
+                            .mean()
+                            .reset_index()
+                            .rename(columns={'Salary': 'Average Salary'})</code></pre></p>
+            <p>Now let's visualize the results.</p>
+            <p><pre><code>>>>averages_job_type_df.plot(kind="bar", 
+                x='Job Type', 
+                y='Average Salary', 
+                ylabel='Average Salary (k USD)', 
+                title='Average Salary by Job Type', 
+                rot=0)</code></pre></p>
 
-            <p><code>&gt;&gt;&gt;job_types = df[&#39;Job Type&#39;].unique()</code></p>
-
-            <p><code>&gt;&gt;&gt;averages_job_type={job_type: 0 for job_type in job_types}</code></p>
-
-            <p>Next, we sum up all the salaries corresponding to the job type.</p>
-
-            <p><code>&gt;&gt;&gt;for index, row in df.iterrows():</code></p>
-
-            <p><code>&nbsp; &nbsp; &nbsp; &nbsp;averages_job_type[row[&#39;Job Type&#39;]] += row[&quot;Salary&quot;]</code></p>
-
-            <p>Finally, we can calculate the average and present our findings.</p>
-
-            <p><code>&gt;&gt;&gt;for x in averages_job_type:</code></p>
-
-            <p><code>&nbsp; &nbsp; &nbsp; &nbsp;averages_job_type[x] = int(averages_job_type[x] / len(df[df[&#39;Job Type&#39;] == x]))</code></p>
-
-            <p><code>&gt;&gt;&gt;averages_job_type</code></p>
-
-            <p><code>{&#39;Full Time&#39;: 85, &#39;Part Time&#39;: 56}</code></p>
-
-            <p>We can represent as a bar graph.&nbsp;</p>
-
-            <p><code>&gt;&gt;&gt;xpoints = np.array(list(averages_job_type.keys()))</code></p>
-
-            <p><code>&gt;&gt;&gt;ypoints = np.array(list(averages_job_type.values()))</code></p>
-
-            <p><code>&gt;&gt;&gt;plt.bar(xpoints, ypoints)</code></p>
-
-            <p><code>&gt;&gt;&gt;plt.xlabel(&quot;Job Type&quot;)</code></p>
-
-            <p><code>&gt;&gt;&gt;plt.ylabel(&quot;Average Salary (k USD)&quot;)</code></p>
-
-            <p><code>&gt;&gt;&gt;plt.title(&quot;Data analysis job average salary per Job Type&quot;)</code></p>
-
-            <p><img alt="" src="https://i.imgur.com/WHRp5x9.png"/></p>
-
+            <p><img alt="" src="https://i.imgur.com/FauebtD.png"/></p>
+            <p>It seems that on average, full time jobs will result in higher pay -- which makes sense.</p>
             <h3 id="question2"><strong>Question 2:&nbsp;What&#39;s the average income per experience level (e.g. Entry-level, Mid-level, Senior level, etc.)?</strong></h3>
 
-            <p>Similar to the previous question, we create a dictionary where the key is the experience level and the corresponding value is the average salary.</p>
-
-            <p><code>&gt;&gt;&gt;experience_levels = df[&quot;Experience level&quot;].unique()</code></p>
-
-            <p><code>&gt;&gt;&gt;averages_experience_level={levels: 0 for levels in experience_levels}</code></p>
-
-            <p>Then we total the salary corresponding to the experience level.</p>
-
-            <p><code>&gt;&gt;&gt;for index, row in df.iterrows():</code></p>
-
-            <p><code>&nbsp; &nbsp; &nbsp; &nbsp;averages_experience_level[row[&quot;Experience level&quot;]] += row[&quot;Salary&quot;]</code></p>
-
-            <p>Finally, we compute the average and share the results.</p>
-
-            <p><code>&gt;&gt;&gt;for x in averages_experience_level:</code></p>
-
-            <p><code>&nbsp; &nbsp; &nbsp; &nbsp;averages_experience_level[x] = int(averages_experience_level[x]/len(df[df[&#39;Experience level&#39;] == x]))</code></p>
-
-            <p><code>&gt;&gt;&gt;xpoints = np.array(list(averages_experience_level.keys()))</code></p>
-
-            <p><code>&gt;&gt;&gt;ypoints = np.array(list(averages_experience_level.values()))</code></p>
-
-            <p><code>&gt;&gt;&gt;plt.bar(xpoints, ypoints)</code></p>
-
-            <p><code>&gt;&gt;&gt;plt.xlabel(&quot;Experience level&quot;)</code></p>
-
-            <p><code>&gt;&gt;&gt;plt.ylabel(&quot;Salary (k USD)&quot;)</code></p>
-
-            <p><code>&gt;&gt;&gt;plt.title(&quot;Data analysis job average salary per experience level&quot;)</code></p>
-
-            <p><code>&gt;&gt;&gt;plt.xticks(rotation = 45)</code></p>
-
-            <p><code>&gt;&gt;&gt;plt.grid(axis=&#39;y&#39;)</code></p>
-
-            <p><code>&gt;&gt;&gt;plt.show()</code></p>
-
-            <p><img alt="" src="https://i.imgur.com/5ctMtNE.png"/></p>
+            <p>Similar to the previous question, we use pandas query</p>
+            <p><pre><code>>>>averages_experience_level_df = df.groupby(['Experience level'])['Salary']
+                                    .mean()
+                                    .reset_index()
+                                    .sort_values('Salary')
+                                    .rename(columns={'Salary': 'Average Salary'})</code></pre></p>
+            <p>Now let's visualize the results.</p>
+            <p><pre><code>>>>averages_experience_level_df.plot(kind="bar", 
+                x='Experience level', 
+                y='Average Salary', 
+                ylabel='Average Salary (k USD)', 
+                title='Average Salary by Experience level', 
+                grid=True, 
+                rot=45)</code></pre></p>
+            <p><img alt="" src="https://i.imgur.com/JnVmkY0.png"/></p>
 
             <h3 id="question3"><strong>Question 3:&nbsp;Which country pays the most?</strong></h3>
 
-            <p>We create a dictionary with country as the key and the corresponding average salary as its value.</p>
+            <p>Here we also use pandas query.</p>
+            <p><pre><code>>>>country_average_salary_df = df.groupby(["Country"])['Salary']
+                                 .mean()
+                                 .reset_index()
+                                 .rename(columns={'Salary': 'Average Salary'})
+                                 .sort_values('Average Salary', ascending=False)
+>>>country_average_salary_df.head(1)
 
-            <p><code>&gt;&gt;&gt;average_per_country = {country: 0 for country in countries}</code></p>
+            </code></pre></p>
+            <table>
+                <tr>
+                    <th></th>
+                    <th>Country</th>
+                    <th>Average Salary</th>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Austria</td>
+                    <td>115.0</td>
+                </tr>
+            </table>
 
-            <p>Total all the salaries.</p>
-
-            <p><code>&gt;&gt;&gt;for index, row in df.iterrows():</code></p>
-
-            <p><code>&nbsp; &nbsp; &nbsp; &nbsp;average_per_country[row[&#39;Location&#39;].split(&#39;,&#39;)[-1].strip().upper()] += row[&#39;Salary&#39;]</code></p>
-
-            <p>Compute the average.</p>
-
-            <p><code>&gt;&gt;&gt;for x in average_per_country:</code></p>
-
-            <p><code>&nbsp; &nbsp; &nbsp; &nbsp;average_per_country[x] = int(average_per_country[x] / len(df[df[&#39;Country&#39;] == x]))</code></p>
-
-            <p>Share the results.</p>
-
-            <p>&gt;&gt;&gt;<code>max(average_per_country, key=average_per_country.get)</code></p>
-
-            <p><code>&#39;AUSTRIA&#39;</code></p>
-
-            <p>Though I don&#39;t believe this output is completely accurate because the amount of samples we&#39;re using for each country are not equal. Though cleaning the data to answer this question was by far the most challanging out of everything -- which made it worth while.</p>
+            <p>Though I don&#39;t believe this output is completely accurate because the amount of samples we&#39;re using for each country are not roughly equal. Though cleaning the data to answer this question was by far the most challanging out of everything -- which made it worth while.</p>
         </div>
     </body>
 </html>
