@@ -84,9 +84,9 @@ code{
     left: 77%;
     top: 15%;
     z-index: 0;
-    padding: 5px;
-    border: 5px black;
+    border: 10px black;
     height: 100%;
+    overflow:scroll;
 }
 
 .tableOfContents ul {
@@ -99,7 +99,8 @@ code{
 }
 
 .tableOfContents p {
-    color: #176B87
+    color: #176B87;
+    padding: 3px;
 }
 
 .post {

@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="..\css\style.css">
 
         <!-- HighlightJS -->
-        <link rel="stylesheet" href="..\packages\highlightjs\styles\github-dark.min.css"/>
+        <link rel="stylesheet" href="..\packages\highlightjs\styles\codepen-embed.min.css"/>
         <script src="..\packages\highlightjs\highlight.min.js"></script>
         <script>hljs.highlightAll();</script>
 
@@ -29,27 +29,45 @@
             <ul>
                 <li><a href="#intro"><big><b><p>Intro</p></b></big></a></li>
                 <li><a href="#tools"><big><b><p>Tools</p></b></big></a></li>
-                <li><a href="#process"><big><b><p>Process</p></b></big></a></li>
+                <li><a href="#theMathForForwardPropagation"><big><b><p>The Math for Forward Propagation</p></b></big></a></li>
                 <ul>
-                    <li><a href="#question1"><big><b><p>Question 1</p></b></big></a></li>
-                    <li><a href="#question2"><big><b><p>Question 2</p></b></big></a></li>
-                    <li><a href="#question3"><big><b><p>Question 3</p></b></big></a></li>
+                    <li><a href="#firstHiddenLayer"><big><b><p>First Hidden Layer</p></b></big></a></li>
+                    <li><a href="#secondHiddenLayer"><big><b><p>Second Hidden Layer</p></b></big></a></li>
+                    <li><a href="#output"><big><b><p>Output</p></b></big></a></li>
+                </ul>
+                <li><a href="#theMathForBackwardsPropagation"><big><b><p>The Math for Backwards Propagation</p></b></big></a></li>
+                <ul>
+                    <li><a href="#derivingTheErrorFunctionOfTheOutputLayer"><big><b><p>Deriving the error function of the output layer</p></b></big></a></li>
+                    <li><a href="#derivingTheErrorFunctionOfEveryOtherLayer"><big><b><p>Deriving the error function of every other layer</p></b></big></a></li>
+                    <li><a href="#derivingTheErrorOfTheWeights"><big><b><p>Deriving the error of the weights</p></b></big></a></li>
+                    <li><a href="#derivingTheErrorOfTheBiases"><big><b><p>Deriving the error of the biases</p></b></big></a></li>
+                    <li><a href="#derivingTheErrorOfTheWeightsOfTheLastLayer"><big><b><p>Deriving the error of the weights of the last layer</p></b></big></a></li>
+                    <li><a href="#derivingTheErrorOfTheBiasesOfTheLastLayer"><big><b><p>Deriving the error of the biases of the last layer</p></b></big></a></li>
+                    <li><a href="#equationsToUpdateWeightsAndBiases"><big><b><p>Equations to update weights and biases</p></b></big></a></li>
+                    <li><a href="#equationsToUpdateExistingWeightsAndBiases"><big><b><p>Equations to update existing weights and biases</p></b></big></a></li>
+                </ul>
+                <li><a href="#codeImplementation"><big><b><p>Code Implementation</p></b></big></a></li>
+                <ul>
+                    <li><a href="#prerequisite"><big><b><p>Prerequisite</p></b></big></a></li>
+                    <li><a href="#forwardPropagationFunctions"><big><b><p>Forward Propagation Functions</p></b></big></a></li>
+                    <li><a href="#backwardsPropagationFunctions"><big><b><p>Backwards Propagation Functions</p></b></big></a></li>
+                    <li><a href="#theLearningAlgorithm"><big><b><p>The Learning Algorithm</p></b></big></a></li>
                 </ul>
                 <br>
                 <li><a href="#"><big><b><p>Top &#8613</p></b></big></a></li>
             </ul>
         </div>
-        <div class="margins">
+        <div class="post">
             <h1>An intro to Neural Networks | MNIST Digit Classification</h1>
             <small>Published on: 8/21/2023</small>
             <hr color="black">
 
 
-            <h2><strong>Intro</strong></h2>
+            <h2 id="intro"><strong>Intro</strong></h2>
 
             <p>I will be constructing a neural network without using any machine learning modules (Tensor Flow, PyTorch, etc). This project will focus on the mathematics behind the layers and optimization. This neural network will attempt to classify hand-written digits. The data set I used can be found <a href="https://www.kaggle.com/competitions/digit-recognizer/data" target="_blank">here</a>. Resources that helped guide me through this process can be found at the end of this post.</p>
 
-            <h2><strong>Tools</strong></h2>
+            <h2 id="tools"><strong>Tools</strong></h2>
 
             <ul>
                 <li>Python</li>
@@ -59,7 +77,7 @@
             </ul>
 
             <hr />
-            <h2><strong>The Math for Forward Propagation</strong></h2>
+            <h2 id="theMathForForwardPropagation"><strong>The Math for Forward Propagation</strong></h2>
 
             <p>The math that makes everything work was probably the hardest aspect of this project -- likely because I haven&#39;t done pure calculus nor algebra in a while. However, it was well worth the time spent to understand the nuances of the math. There will be a ton of variables to keep track of indices and I will try my best to keep track of them so you don&#39;t forget what they are mid-way.</p>
 
@@ -86,7 +104,7 @@
             <p>Finally, the output layer will use output from the previous layer to classify the digit.</p>
 
             <hr />
-            <h3><strong>First hidden layer</strong></h3>
+            <h3 id="firstHiddenLayer"><strong>First hidden layer</strong></h3>
 
             <p>We define the following:</p>
 
@@ -118,7 +136,7 @@
             </ul>
 
             <hr />
-            <h3><strong>Second hidden layer</strong></h3>
+            <h3 id="secondHiddenLayer"><strong>Second hidden layer</strong></h3>
 
             <p>Similar to the first hidden layer, we define the following:</p>
 
@@ -156,18 +174,18 @@
             </ul>
 
             <hr />
-            <h3><strong>Output layer</strong></h3>
+            <h3 id="output"><strong>Output</strong></h3>
 
-            <p>The second hidden layer essentially spits out a vector of probabilities. So, the output layer will take the maximum value from that vector and classify the image based on the index of that maximum value.</p>
+            <p>The second hidden layer essentially spits out a vector of probabilities. So, the output will tbe the maximum value from that vector and classify the image based on the index of that maximum value.</p>
 
             <p>For example, suppose we have the following:</p>
 
             <p>\([0.1,0.1,0.1,0.3,0.4,0,0,0,0,0]\) -- the probabilities vector from second hidden layer.</p>
 
-            <p>Then our output layer will return \(4\) because the maximum of that vector is \(0.4\) located at index \(4\).</p>
+            <p>Then our output will return \(4\) because the maximum of that vector is \(0.4\) located at index \(4\).</p>
 
             <hr />
-            <h2><strong>The Math for Backwards Propagation</strong></h2>
+            <h2 id="theMathForBackwardsPropagation"><strong>The Math for Backwards Propagation</strong></h2>
 
             <p>When we begin the forward propagation process, the weight and biases are chosen at random within a given interval. Our job now after each epoch, we will need to optimize each weights and biases such that we minimize the error. Since this model contains multiple classes (10 to be exact), we will use Categorical Cross Entropy as our cost function.</p>
 
@@ -181,7 +199,7 @@
                 <li>\(L_i=\)sample cost value</li>
                 <li>\(y_{ij}=\)\(j^{th}\) output index of the \(i^{th}\) sample</li>
                 <li>\(y=\)target values, one-hot encoded</li>
-                <li>\(\hat(y)=\)predicted values</li>
+                <li>\(\hat{y}=\)predicted values</li>
             </ul>
 
             <p>Due to the one-hot encoding of \(y\), our cost function simplifies to:</p>
@@ -202,33 +220,472 @@
 
             <p>&nbsp; &nbsp; &nbsp; &nbsp;As our probability increases for the prediction of our target class, our error decreases.</p>
 
-            <h3><strong>Deriving the error function for the output layer</strong></h3>
+            <h3 id="derivingTheErrorFunctionOfTheOutputLayer"><strong>Deriving the error function of the output layer</strong></h3>
+            <p>Let \(L=-\sum_m^{10} y_m ln(a_m)\) be the cost function.</p>
 
-            <p>&nbsp;</p>
+            <p>Where</p>
 
-            <p>&nbsp;</p>
+            <ul>
+                <li>\(y_m\) is the value for the \(m^{th}\) index of the one-hot encoded vector</li>
+                <li>\(a_m\) is the probability for the&nbsp;\(m^{th}\) index of the output of our neural network. i.e. the activated neuron in the last layer</li>
+            </ul>
 
-            <p>&nbsp;</p>
+            <p>Recall:</p>
 
-            <p>&nbsp;</p>
+            <p>$$a_n=\frac{e^{z_n}}{\sum_k^{10} e^{z_k}}$$</p>
 
-            <p>&nbsp;</p>
+            <p>Then, we will need to find the following:</p>
 
-            <p>&nbsp;</p>
+            <p>$$\frac{\partial{L}}{\partial{z_n}} = \sum_m^{10}&nbsp;\frac{\partial{L}}{\partial{a_m}}\frac{\partial{a_m}}{\partial{z_n}}$$</p>
 
-            <p>&nbsp;</p>
+            <p>$$=\sum_{m\neq n}^{10}&nbsp; (\frac{\partial{L}}{\partial{a_m}}\frac{\partial{a_m}}{\partial{z_n}})&nbsp;+ \frac{\partial{L}}{\partial{a_n}}\frac{\partial{a_n}}{\partial{z_n}}$$</p>
 
-            <p>&nbsp;</p>
+            <p>Solving for \(\frac{\partial{L}}{\partial{a_n}}\):</p>
 
-            <p>&nbsp;</p>
+            <p>$$\frac{\partial{L}}{\partial{a_n}}=\frac{\partial(-\sum_m^{10} y_m ln(a_m))}{\partial a_n}$$</p>
 
-            <p>&nbsp;</p>
+            <p>$$=\frac{\partial(-y_n ln(a_n))}{\partial a_n}$$</p>
 
-            <p>&nbsp;</p>
+            <p>$$=\frac{-y_n}{a_n}$$</p>
 
-            <p>&nbsp;</p>
+            <p style="text-align:center">\(\frac{\partial{L}}{\partial{a_n}}=\frac{-y_n}{a_n}\) ... Equation (1)</p>
 
-            <p>&nbsp;</p>
+            <p>Solving for \(\frac{\partial{a_n}}{\partial{z_n}}\):</p>
+
+            <p>$$\frac{\partial{a_n}}{\partial{z_n}}=\frac{\partial(\frac{e^{z_n}}{\sum_m^{10} e^{z_m}})}{\partial z_n}$$</p>
+
+            <p>$$=\frac{e^{z_n}(\sum_m^{10}e^{z_m})-e^{z_n}(e^{z_n})}{(\sum_m^{10}e^{z_m})^2}$$</p>
+
+            <p>$$=\frac{e^{z_n}}{\sum_m^{10}e^z_m}(\frac{\sum_m^{10}e^{z_m}-e^{z_n}}{\sum_m^{10}e^{z_m}})$$</p>
+
+            <p>$$=\frac{e^{z_n}}{\sum_m^{10}e^{z_m}}(1-\frac{e^{z_n}}{\sum_m^{10}e^{z_m}})$$</p>
+
+            <p>$$=a_n(1-a_n)$$</p>
+
+            <p style="text-align:center">\(\frac{\partial{a_n}}{\partial{z_n}}=a_n(1-a_n)\) ... Equation (2)</p>
+
+            <p>For \(\frac{\partial{L}}{\partial{a_m}}\):</p>
+
+            <p>$$\frac{\partial{L}}{\partial{a_m}}=\frac{\partial(-\sum_i^{10}y_i ln(a_i))}{\partial a_m}$$</p>
+
+            <p>$$=\frac{-y_m}{a_m}$$</p>
+
+            <p style="text-align:center">\(\frac{\partial{L}}{\partial{a_m}}=\frac{-y_m}{a_m}\) ... Equation (3)</p>
+
+            <p>For \(\frac{\partial{a_m}}{\partial{z_n}}\):</p>
+
+            <p>$$\frac{\partial{a_m}}{\partial{z_n}}=\frac{\partial(\frac{e^{z_m}}{\sum_i^{10}e^{z_i}})}{\partial z_n}$$</p>
+
+            <p>$$=\frac{0\cdot(\sum_i^{10}e^{z_i})-e^{z_m}e^{z_n}}{(\sum_i^{10}e^{z_i})^2}$$</p>
+
+            <p>$$=-(\frac{e^{z_m}}{\sum_i^{10}e^{z_i}})(\frac{e^{z_n}}{\sum_i^{10}e^{z_i}})$$</p>
+
+            <p>$$ =-a_ma_n$$</p>
+
+            <p style="text-align:center">\(\frac{\partial{a_m}}{\partial{z_n}}=-a_ma_n\) ... Equation (4)</p>
+
+            <p>To summarize, we have the following:</p>
+
+            <ul>
+                <li>\(\frac{\partial{L}}{\partial{a_n}}=\frac{-y_n}{a_n}\) ... Equation (1)</li>
+                <li>\(\frac{\partial{a_n}}{\partial{z_n}}=a_n(1-a_n)\) ... Equation (2)</li>
+                <li>\(\frac{\partial{L}}{\partial{a_m}}=\frac{-y_m}{a_m}\) ... Equation (3)</li>
+                <li>\(\frac{\partial{a_m}}{\partial{z_n}}=-a_ma_n\) ... Equation (4)</li>
+            </ul>
+
+            <p>Putting everything back into the original equation, we have:</p>
+
+            <p>$$\frac{\partial{L}}{\partial{z_n}} =\sum_{m\neq n}^{10}&nbsp; (\frac{\partial{L}}{\partial{a_m}}\frac{\partial{a_m}}{\partial{z_n}})&nbsp;+ \frac{\partial{L}}{\partial{a_n}}\frac{\partial{a_n}}{\partial{z_n}}$$</p>
+
+            <p>$$=\sum_{m\neq n}^{10}((\frac{-y_m}{a_m})(-a_ma_n))+(\frac{-y_n}{a_n})(a_n(1-a_n))$$</p>
+
+            <p>$$=\sum_{m\neq n}^{10}(y_ma_n)+(-y_n(1-a_n))$$</p>
+
+            <p>$$=a_n\sum_{m\neq n}^{10}y_m+y_na_n-y_n$$</p>
+
+            <p>Note: Since \(y\) is one-hot encoded, it must be that \(\sum_m^{10}y_m=1\).</p>
+
+            <p>Hence we can further simplify to the following:</p>
+
+            <p>$$a_n\sum_{m\neq n}^{10}y_m+y_na_n-y_n$$</p>
+
+            <p>$$=a_n\cdot 1 -y_n$$</p>
+
+            <p>$$=a_n-y_n$$</p>
+
+            <p>In vector form, the above is simply just \(\frac{\partial L}{\partial Z_f}=a^{[f]}-y\) where \(f\) is the final layer.&nbsp;(Note: \([f]\) is put in the superscript and DOES NOT mean exponent/power)</p>
+
+            <h3 id="derivingTheErrorFunctionOfEveryOtherLayer"><strong>Deriving the error function of every other layer</strong></h3>
+
+            <p><strong>**Important** Recall the structure of our forward propagation:</strong></p>
+
+            <p>$$z_k^{[l]} = z_k^{[l]}(a_1^{[l-1]}, a_2^{[l-2]},...,a_{n^{[l-1]}}^{[l-1]})$$</p>
+
+            <p>$$=w_{k, 1}^{[l]}a_1^{[l-1]}+w_{k,2}^{[l]}a_2^{[l-1]}+...+w_{k,n^{[l-1]}}^{[l]}a_{n^{[l-1]}}^{[l-1]}+b_k^{[l]}$$&nbsp;</p>
+
+            <p>Our goal is to derive \(\frac{\partial L}{\partial z^{[l-1]}}\) where \(l\) represents the \(l^{th}\) layer.</p>
+
+            <p>Consider the following:</p>
+
+            <p>$$\frac{\partial L}{\partial z_i^{[l-1]}}=\sum_{k=1}^{n^{[l-1]}}\frac{\partial L}{\partial a_k^{[l-1]}}\frac{\partial g^{[l-1]}}{\partial z_i^{[l-1]}}$$</p>
+
+            <p>where:</p>
+
+            <ul>
+                <li>\(L\) is the loss function</li>
+                <li>\(z\) is the unactivated neuron</li>
+                <li>\(a\) is the activated neuron</li>
+                <li>\(g\) is the activation function</li>
+                <li>\(i\) is the index&nbsp;of the&nbsp;neuron of the layer that it&#39;s in</li>
+                <li>\([l]\) is the layer index (Note: this is put in the superscript and DOES NOT mean exponent/power)</li>
+                <li>\(n\) is the total number of neurons in layer \(l\)</li>
+            </ul>
+
+            <p>Note:</p>
+
+            <p>$$\frac{\partial g^{[l-1]}}{\partial z_i^{[l-1]}}=\begin{cases}g^{[l-1](1)}(z_k^{[l-1]})&amp;,k=i\\ 0&amp; ,otherwise\end{cases}$$</p>
+
+            <p>This is because \(g^{[l-1]}\) only takes one \(z\) as the input each time. Also, the superscript \((1)\) represents the first derivative.</p>
+
+            <p>Thus, the summation collapses and simplifies to the following:</p>
+
+            <p>$$\frac{\partial L}{\partial z_i^{[l-1]}}=\frac{\partial L}{\partial a_i^{[l-1]}}g^{[l-1](1)}(z_i^{l-1})$$</p>
+
+            <p>We can generalize the above in terms of matrix operations as follows.</p>
+
+            <p>\(\frac{\partial L}{\partial z^{[l-1]}}=\frac{\partial L}{\partial a^{[l-1]}}\cdot g^{[l-1](1)}(z^{[l-1]})\) ... Equation (5), with term-wise multiplication</p>
+
+            <p>where</p>
+
+            <ul>
+                <li>\(\frac{\partial L}{\partial a^{[l-1]}}=\begin{bmatrix}\frac{\partial L}{\partial a_1^{[l-1]}}\\\frac{\partial L}{\partial a_2^{[l-1]}}\\...\\\frac{\partial L}{\partial a_{n^{[l-1]}}^{[l-1]}}\end{bmatrix}\)</li>
+                <li>\(g^{[l-1](1)}(z^{[l-1]})=\begin{bmatrix}g^{[l-1](1)}(z_1^{[l-1]})\\g^{[l-1](1)}(z_2^{[l-1]})\\...\\g^{[l-1](1)}(z_{n^{[l-1]}}^{[l-1]})\end{bmatrix}\)</li>
+            </ul>
+
+            <p>So, we know what \(g\) is because it&#39;s predefined during forward propagation. We need to determine what \(\frac{\partial L}{\partial a_i^{[l-1]}}\) is.</p>
+
+            <p>For \(\frac{\partial L}{\partial a_i^{[l-1]}}\):</p>
+
+            <p>We have the following.</p>
+
+            <p>$$\frac{\partial L}{\partial a_i^{[l-1]}}=\sum_{k=1}^{n^{[l]}}\frac{\partial L}{\partial z_k^{[l]}}\frac{\partial z_k^{[l]}}{\partial a_i^{[l-1]}}$$</p>
+
+            <p>Note:</p>
+
+            <p>$$\frac{\partial z_k^{[l]}}{\partial a_i^{[l-1]}}=w_{k, i}^{[l]}$$</p>
+
+            <p>This is because every \(a_j^{[l-1]}\) are considered constants for \(j\neq i\).</p>
+
+            <p>Thus we can simplify as follows:</p>
+
+            <p>$$\frac{\partial L}{\partial a_i^{[l-1]}}=\sum_{k=1}^{n^{[l]}}\frac{\partial L}{\partial z_k^{[l]}}\frac{\partial z_k^{[l]}}{\partial a_i^{[l-1]}}=\sum_{k=1}^{n^{[l]}}\frac{\partial L}{\partial z_k^{[l]}}w_{k, i}^{[l]}$$</p>
+
+            <p>We can generalize the above in terms of matrix operations as follows.</p>
+
+            <p>\(\frac{\partial L}{\partial a^{[l-1]}}=w^{[l]}\cdot \frac{\partial L}{\partial z^{[l]}}\) ... Equation (6)</p>
+
+            <p>where</p>
+
+            <ul>
+                <li>\(w^{[l]}=\begin{bmatrix}w_{1,1}^{[l]}&amp;w_{2,1}^{[l]}&amp;...&amp;w_{n^{[l]},1}^{[l]}\\ w_{1,2}^{[l]}&amp;w_{2,2}^{[l]}&amp;...&amp;w_{n^{[l]},2}^{[l]}\\...&amp;...&amp;...&amp;...\\w_{1,n^{[l-1]}}^{[l]}&amp;w_{2,n^{[l-1]}}^{[l]}&amp;...&amp;w_{n^{[l]},n^{[l-1]}}^{[l]}\end{bmatrix}\)</li>
+                <li>\(\frac{\partial L}{\partial z^{[l]}}=\begin{bmatrix}\frac{\partial L}{\partial z_1^{[l]}}\\\frac{\partial L}{\partial z_2^{[l]}}\\...\\\frac{\partial L}{\partial z_{n^{[l]}}^{[l]}}\end{bmatrix}\)</li>
+            </ul>
+
+            <p>Substituting Equation (6) into Equation (5), we obtain the following:</p>
+
+            <p>$$\frac{\partial L}{\partial z^{[l-1]}}=\frac{\partial L}{\partial a^{[l-1]}}\cdot g^{[l-1](1)}(z^{[l-1]})$$</p>
+
+            <p>$$=w^{[l]}\frac{\partial L}{\partial z^{[l]}}g^{[l-1](1)}(z^{[l-1]})$$</p>
+
+            <h3 id="derivingTheErrorOfTheWeights"><strong>Deriving the error of the weights</strong></h3>
+
+            <p>Goal: Derive \(\frac{\partial L}{\partial w^{[l]}}\)</p>
+
+            <p>Consider the following.</p>
+
+            <p>$$\frac{\partial L}{\partial w_{i,j}^{[l]}}=\sum_{k=1}^{n^{[l]}}\frac{\partial L}{\partial z_k^{[l]}}\frac{\partial z_k^{[l]}}{\partial w_{i,j}^{[l]}}$$</p>
+
+            <p>Note: \(\frac{\partial z_k^{[l]}}{\partial w_{i,j}^{[l]}}=\begin{cases}a_j^{[l-1]}&amp;,k=i\\0&amp;,otherwise\end{cases}\)</p>
+
+            <p>Hence we obtain the following.</p>
+
+            <p>$$\frac{\partial L}{\partial w_{i,j}^{[l]}}=\frac{\partial L}{\partial z_{i,j}^{[l]}}a_j^{[l-1]}$$</p>
+
+            <p>$$\Rightarrow \frac{\partial L}{\partial w^{[l]}}=\frac{\partial L}{\partial z^{[l]}}(a^{[l-1]})^T$$</p>
+
+            <h3 id="derivingTheErrorOfTheBiases"><strong>Deriving the error of the biases</strong></h3>
+
+            <p>Goal: Derive \(\frac{\partial L}{\partial b^{[l]}}\)</p>
+
+            <p>Consider the following.</p>
+
+            <p>$$\frac{\partial L}{\partial b_i^{[l]}}=\sum_{k=1}^{n^{[l]}}\frac{\partial L}{\partial z_k^{[l]}}\frac{\partial z_k^{[l]}}{\partial b_i^{[l]}}$$</p>
+
+            <p>Note: \(\frac{\partial z_k^{[l]}}{\partial b_i^{[l]}}=\begin{cases}1&amp;,k=i\\0&amp;,otherwise\end{cases}\)</p>
+
+            <p>Thus we get the following.</p>
+
+            <p>$$\frac{\partial L}{\partial b_i^{[l]}}=\frac{\partial L}{\partial z_i^{[l]}}$$</p>
+
+            <p>$$\Rightarrow \frac{\partial L}{\partial b^{[l]}}=\frac{\partial L}{\partial z^{[l]}}$$</p>
+
+            <h3 id="derivingTheErrorOfTheWeightsOfTheLastLayer"><strong>Deriving the error of the weights of the last layer</strong></h3>
+
+            <p>Let \(l\) be the index of the last layer.</p>
+
+            <p>Then,</p>
+
+            <p>$$\frac{\partial L}{/\partial w^{[l]}}=\frac{\partial L}{\partial z^{[l]}}(a^{[l-1]})^T=(a^{[l]}-y)(a^{[l-1]})^T$$</p>
+
+            <p>However, the above equation represents the total error of all the weights.&nbsp;</p>
+
+            <p>Thus, let \(t\) be the number of training data points and when can obtain the average error as follows.</p>
+
+            <p>$$Error_{w^{[l]}}=\frac{1}{t}(a^{[l]}-y)(a^{[l-1]})^T$$</p>
+
+            <h3 id="derivingTheErrorOfTheBiasesOfTheLastLayer"><strong>Deriving the error of the biases of the last layer</strong></h3>
+
+            <p>Let \(l\) be the index of the last layer and&nbsp;\(t\) be the number of training data points.</p>
+
+            <p>Then,</p>
+
+            <p>$$\frac{\partial L}{\partial b^{[l]}}=\frac{\partial L}{\partial z^{[l]}}=\sum_j^{t}(a^{[l]}-y)$$</p>
+
+            <p>With similar reasoning, we need to divide by \(t\).</p>
+
+            <p>$$Error_{b^{[l]}}=\frac{1}{t}\sum_j^{t}(a^{[l]}-y)$$</p>
+
+            <h3 id="equationsToUpdateWeightsAndBiases"><strong>Equations to update weights and biases</strong></h3>
+
+            <p>Now we can definine equations to update existing weights and biases for each layer depening on the respective errors.</p>
+
+            <p>Recall: we have 2 hidden layers and each layer has the following characteristics.</p>
+
+            <p style="margin-left:40px">&nbsp;Layer 1:</p>
+
+            <ul>
+                <li>\(Z^{[1]}_{10\times m}=w^{[1]}_{10\times 784}A^{[0]}_{784\times m}+b^{[1]}_{10\times1}\)</li>
+                <li>\(A^{[1]}=g(Z^{[1]})=ReLU(Z^{[1]})\)&nbsp;</li>
+            </ul>
+
+            <p style="margin-left:40px">Layer 2:</p>
+
+            <ul>
+                <li>\(Z^{[2]}_{10\times m}=w^{[2]}_{10\times 10}A^{[1]}_{10\times m}+b^{[2]}_{10\times1}\)</li>
+                <li>\(A^{[2]}=\)\(softmax(Z^{[2]})\)</li>
+            </ul>
+
+            <p>The equation of the errors are defined as follows.</p>
+
+            <ul>
+                <li>\(Error_{Z^{[2]}}=A^{[2]}-y\)</li>
+                <li>\(Error_{W^{[2]}}=\frac{1}{m}Error_{Z^[2]}A^{[1]T}\)</li>
+                <li>\(Error_{b^{[2]}}=\frac{1}{m}\sum Error_{Z^{[2]}}\)</li>
+                <li>\(Error_{Z^{[1]}}=W^{[2]T}Error_{Z^{[2]}}ReLU^{(1)}(Z^{[1]})\)</li>
+                <li>\(Error_{W^{[1]}}=\frac{1}{m}Error_{Z^{[1]}}X^T\)</li>
+                <li>\(Error_{b^{[1]}}=\frac{1}{m}\sum Error_{Z^{[1]}}\)</li>
+            </ul>
+
+            <h3 id="equationsToUpdateExistingWeightsAndBiases"><strong>Equations to update existing weights and biases</strong></h3>
+
+            <p>Let \(\alpha\) be the learning rate.</p>
+
+            <ul>
+                <li>\(New_{W^{[1]}}=W^{[1]}-\alpha Error_{W^{[1]}}\)</li>
+                <li>\(New_{b^{[1]}}=b^{[1]}-\alpha Error_{b^{[1]}}\)</li>
+                <li>\(New_{W^{[2]}}=W^{[2]}-\alpha Error_{W^{[2]}}\)</li>
+                <li>\(New_{b^{[2]}}=b^{[2]}-\alpha Error_{b^{[2]}}\)</li>
+            </ul>
+
+            <hr />
+            <h2 id="codeImplementation"><strong>Code implementation</strong></h2>
+
+            <h3 id="prerequisite"><strong>Prerequisite</strong></h3>
+
+            <p>Import packages and data.</p>
+
+            <p><pre><code>&gt;&gt;&gt;import numpy as np
+
+&gt;&gt;&gt;import pandas as pd
+
+&gt;&gt;&gt;data = pd.read_csv(&quot;train.csv&quot;)</code></pre></p>
+
+            <p>Shuffle and split the data into a validation set and a training set.</p>
+
+            <p><pre><code>&gt;&gt;&gt;data_dev = data[0:1000].T
+
+&gt;&gt;&gt;Y_dev = data_dev[0]
+
+&gt;&gt;&gt;X_dev = data_dev[1:n]
+
+&gt;&gt;&gt;X_dev = X_dev / 255.
+
+&gt;&gt;&gt;data_train = data[1000:m].T
+
+&gt;&gt;&gt;Y_train = data_train[0]
+
+&gt;&gt;&gt;X_train = data_train[1:n]
+
+&gt;&gt;&gt;X_train = X_train / 255.</code></pre></p>
+
+            <h3 id="forwardPropagationFunctions"><strong>Forward Propagation Functions</strong></h3>
+
+            <p>Initialize weights and biases.</p>
+
+            <p><pre><code>&gt;&gt;&gt;def init_params():
+
+&nbsp; &nbsp; &nbsp;W1 = np.random.rand(10, 784) - 0.5
+
+&nbsp; &nbsp; &nbsp;b1 = np.random.rand(10, 1) - 0.5
+
+&nbsp; &nbsp; &nbsp;W2 = np.random.rand(10, 10) - 0.5
+
+ &nbsp; &nbsp; &nbsp;b2 = np.random.rand(10, 1) - 0.5
+
+&nbsp; &nbsp; &nbsp;return W1, b1, W2, b2</code></pre></p>
+
+            <p>Defining the ReLU function.</p>
+
+            <p><pre><code>&gt;&gt;&gt;def ReLU(Z):
+
+&nbsp; &nbsp; &nbsp;return np.maximum(Z, 0) # Performs element-wise comparison with matrix Z to the number 0
+
+>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;# ie, if Z_{jk} &lt;= 0, returns 0. If Z_{jk} &gt; 0, returns Z_{jk}</code></pre></p>
+
+            <p>Defining the softmax function.</p>
+
+            <p><pre><code>&gt;&gt;&gt;def softmax(Z):
+
+&nbsp; &nbsp; &nbsp;A = np.exp(Z) / sum(np.exp(Z)) # Definition of the softmax function. We use Python&#39;s built-in sum because it&#39;ll add the values&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; # column-wise
+
+&nbsp; &nbsp; &nbsp;return A</code></pre></p>
+
+            <p>Defining one-hot encoding.</p>
+
+            <p><pre><code>&gt;&gt;&gt;def one_hot(Y):
+
+&nbsp; &nbsp; &nbsp;one_hot_Y = np.zeros((Y.size, Y.max() + 1)) # Y.size returns the number of elements in Y, aka m
+
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;# Y.max() = 9, thus Y.max + 1 = 10. Recall: Y here is our labels array
+
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;# Hence, (Y.size, Y.max + 1) describes the dimension of one_hot_Y
+
+&nbsp;
+
+&nbsp; &nbsp; &nbsp;one_hot_Y[np.arange(Y.size), Y] = 1&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;# Accessing each row by index [j, k] = [np.arange(Y.size), Y] and set that value to 1
+
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;# np.arange(Y.size) = [0, 1, 2, ... , m]
+
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;# Y = labels array
+
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;# Hence, each row represents a label but one-hot-encoded
+
+&nbsp;
+
+&nbsp; &nbsp; &nbsp;one_hot_Y = one_hot_Y.T&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;# Transposing
+
+&nbsp; &nbsp; &nbsp;return one_hot_Y</code></pre></p>
+
+            <p>Defining forward propagation function.</p>
+
+            <p><pre><code>&gt;&gt;&gt;def forward_prop(W1, b1, W2, b2, X):
+
+&nbsp; &nbsp; &nbsp;Z1 = W1.dot(X) + b1 &nbsp; # Apply linear transformation on X
+
+&nbsp; &nbsp; &nbsp;A1 = ReLU(Z1) &nbsp; &nbsp; &nbsp; &nbsp; # Activating Z1 using activation function ReLU
+
+&nbsp; &nbsp; &nbsp;Z2 = W2.dot(A1) + b2 &nbsp;# Apply linear transformation on A1
+
+&nbsp; &nbsp; &nbsp;A2 = softmax(Z2) &nbsp; &nbsp; &nbsp;# Activating Z2 using actication function softmax
+
+&nbsp; &nbsp; &nbsp;return Z1, A1, Z2, A2</code></pre></p>
+
+            <p>Defining the derivative of the ReLU function.</p>
+
+            <p><pre><code>&gt;&gt;&gt;def deriv_ReLU(Z):
+
+&nbsp; &nbsp; &nbsp;return Z &gt; 0 # Recall True = 1, False = 0</code></pre></p>
+
+            <h3 id="backwardsPropagationFunctions"><strong>Backwards Propagation Functions</strong></h3>
+
+            <p>Defining the function to calculate errors.</p>
+
+            <p><pre><code>&gt;&gt;&gt;def back_prop(Z1, A1, Z2, A2, W1, W2, X, Y):
+
+&nbsp; &nbsp; &nbsp;m = Y.size
+
+&nbsp; &nbsp; &nbsp;one_hot_Y = one_hot(Y) # Perform one-hot-encoding on Y
+
+&nbsp; &nbsp; &nbsp;dZ2 = A2 - one_hot_Y &nbsp; # Calculate error
+
+&nbsp; &nbsp; &nbsp;dW2 = 1 / m * dZ2.dot(A1.T)
+
+&nbsp; &nbsp; &nbsp;db2 = 1 / m * np.sum(dZ2)
+
+&nbsp; &nbsp; &nbsp;dZ1 = W2.T.dot(dZ2) * deriv_ReLU(Z1)
+
+&nbsp; &nbsp; &nbsp;dW1 = 1 / m * dZ1.dot(X.T)
+
+&nbsp; &nbsp; &nbsp;db1 = 1 / m * np.sum(dZ1)
+
+&nbsp; &nbsp; &nbsp;return dW1, db1, dW2, db2</code></pre></p>
+
+            <p>Defining the function to update weights and biases.</p>
+
+            <p><pre><code>&gt;&gt;&gt;def update_params(W1, b1, W2, b2, dW1, db1, dW2, db2, alpha):
+
+&nbsp; &nbsp; &nbsp;W1 = W1 - alpha * dW1
+
+&nbsp; &nbsp; &nbsp;b1 = b1 - alpha * db1
+
+&nbsp; &nbsp; &nbsp;W2 = W2 - alpha * dW2
+
+&nbsp; &nbsp; &nbsp;b2 = b2 - alpha * db2
+
+&nbsp; &nbsp; &nbsp;return W1, b1, W2, b2</code></pre></p>
+
+            <h3 id="theLearningAlgorithm"><strong>The Learning Algorithm</strong></h3>
+
+            <p>Function for extracting the prediction from the output of our neural network.</p>
+
+            <p><pre><code>&gt;&gt;&gt;def get_predictions(A2):
+
+&nbsp; &nbsp; &nbsp;return np.argmax(A2, 0) # Returns index of greatest value per column</code></pre></p>
+
+            <p>Function for calculating the accuracy of the prediction.</p>
+
+            <p><pre><code>&gt;&gt;&gt;def get_accuracy(predictions, Y):
+
+&nbsp; &nbsp; &nbsp;print(predictions, Y)
+
+&nbsp; &nbsp; &nbsp;return np.sum(predictions == Y) / Y.size</code></pre></p>
+
+            <p>Function for gradient descent (continuous iteration through the training set and optimize the weights and biases each time).</p>
+
+            <p><pre><code>&gt;&gt;&gt;def gradient_descent(X, Y, iterations, alpha):
+
+&nbsp; &nbsp; &nbsp;W1, b1, W2, b2 = init_params()
+
+&nbsp; &nbsp; &nbsp;for i in range(iterations):
+
+&nbsp; &nbsp; &nbsp; &nbsp;Z1, A1, Z2, A2 = forward_prop(W1, b1, W2, b2, X)
+
+&nbsp; &nbsp; &nbsp; &nbsp;dW1, db1, dW2, db2 = back_prop(Z1, A1, Z2, A2, W1, W2, X, Y)
+
+&nbsp; &nbsp; &nbsp; &nbsp;W1, b1, W2, b2 = update_params(W1, b1, W2, b2, dW1, db1, dW2, db2, alpha)
+
+&nbsp; &nbsp; &nbsp; &nbsp;if (i % 10) == 0:
+
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;print(&quot;Iterations&quot;, i)
+
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;print(&quot;Accuracy&quot;, get_accuracy(get_predictions(A2), Y))
+
+&nbsp; &nbsp; &nbsp;return W1, b1, W2, b2</code></pre></p>
+
+            <p>Now we can run the following to train our neural network.</p>
+
+            <p><pre><code>&gt;&gt;&gt;W1, b1, W2, b2 = gradient_descent(X_train, Y_train, 500, 0.10)</code></pre></p>
+
         </div>
     </body>
 </html>
