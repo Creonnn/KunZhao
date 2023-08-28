@@ -86,7 +86,6 @@ code{
     z-index: 0;
     border: 10px black;
     height: 100%;
-    overflow:scroll;
 }
 
 .tableOfContents ul {
@@ -118,3 +117,27 @@ code{
 table, th, td {
     border:1px solid black;
   }
+
+.tableOfContentsScroll {
+    position: fixed;
+    left: 77%;
+    top: 15%;
+    z-index: 0;
+    border: 10px black;
+    height: 100%;
+    overflow:scroll;
+}
+
+.tableOfContentsScroll ul {
+    list-style-type: none;
+}
+
+.tableOfContentsScroll a {
+    text-decoration:none;
+    transition-duration: 1s;
+}
+
+.tableOfContentsScroll p {
+    color: #176B87;
+    padding: 3px;
+}
