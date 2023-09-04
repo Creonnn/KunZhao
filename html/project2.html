@@ -65,7 +65,7 @@
 
             <h2 id="intro"><strong>Intro</strong></h2>
 
-            <p>I will be constructing a neural network without using any machine learning modules (Tensor Flow, PyTorch, etc). This project will focus on the mathematics behind the layers and optimization. This neural network will attempt to classify hand-written digits. The data set I used can be found <a href="https://www.kaggle.com/competitions/digit-recognizer/data" target="_blank">here</a>. The notebook with all the code can be found <a href="https://colab.research.google.com/drive/19r3ZRTi1M3QkW_emI75yz7KCy3hWKKD6?usp=sharing">here</a></p>
+            <p>I will be constructing a neural network without using any machine learning modules (Tensor Flow, PyTorch, etc). This project will focus on the mathematics behind the layers and optimization. This neural network will attempt to classify hand-written digits. The data set I used can be found <a href="https://www.kaggle.com/competitions/digit-recognizer/data" target="_blank">here</a>. The notebook with all the code can be found <a href="https://colab.research.google.com/drive/19r3ZRTi1M3QkW_emI75yz7KCy3hWKKD6?usp=sharing">here</a>.</p>
 
             <h2 id="tools"><strong>Tools</strong></h2>
 
@@ -89,19 +89,17 @@
 
             <p>Let \(m=\) number of training images.</p>
 
-            <p>Now we can define all our training images as a matrix as follows:</p>
-
-            <p>\(X=\begin{bmatrix}x^{(1)}&amp;x^{(2)}&amp;...&amp;x^{(m)}\end{bmatrix}\)</p>
+            <p>Now we can define all our training images as the matrix \(X=\begin{bmatrix}x^{(1)}&amp;x^{(2)}&amp;...&amp;x^{(m)}\end{bmatrix}\) where each \(x^{i}\) represents an image from our training set.</p>
 
             <p>We will have ten classes: \([0,1,2,3,4,5,6,7,8,9]\), ie. all the possible digits.</p>
 
-            <p>We will use 3 layers: The input layer (784 neurons), two hidden layers (10 neurons each), and the output layer (10 neurons).</p>
+            <p>We will use 3 layers: The input layer (784 neurons), two hidden layers (10 neurons each), and the output layer.</p>
 
-            <p>The input layer -- exactly how is sounds -- will be \(x^{(i)}\), one of the images.&nbsp;</p>
+            <p>The input layer takes one of the \(x^{i}\) (an image) as the input. Each of the 784 neurons takes a pixel from that image.&nbsp;</p>
 
             <p>The hidden layers will apply a linear transformation and an activation function on the neurons from the preceding layer.</p>
 
-            <p>Finally, the output layer will use output from the previous layer to classify the digit.</p>
+            <p>Finally, the output layer will attempt to classify the image based on the output from the previous layer.</p>
 
             <hr />
             <h3 id="firstHiddenLayer"><strong>First hidden layer</strong></h3>
@@ -124,7 +122,7 @@
 
             <p>\(ReLU(x)=\begin{cases}x&amp;x&gt;0\\0&amp;x\leq 0\end{cases}\)</p>
 
-            <p>Thus, let&#39;s define:</p>
+            <p>Furthermore,</p>
 
             <p>Let \(A^{[1]}=g(Z^{[1]})=ReLU(Z^{[1]})\)&nbsp;</p>
 
@@ -153,7 +151,7 @@
 
             <p>We will be using the Softmax function as the activation function for the second hidden layer. It is defined as follows:</p>
 
-            <p>\(softmax(X)=\frac{e^{x_i}}{\sum_{j=1}^{k}e^{x_j}}\)</p>
+            <p>$$softmax(X)=\frac{e^{x_i}}{\sum_{j=1}^{k}e^{x_j}}$$</p>
 
             <p>where</p>
 
@@ -176,7 +174,7 @@
             <hr />
             <h3 id="output"><strong>Output</strong></h3>
 
-            <p>The second hidden layer essentially spits out a vector of probabilities. So, the output will tbe the maximum value from that vector and classify the image based on the index of that maximum value.</p>
+            <p>The outpur layer essentially make a prediction based on the output of the previous layer (a vector of probabilities). So, the output will be the maximum value from that vector (ie. the highist probability) and classify the image based on the index of that maximum value.</p>
 
             <p>For example, suppose we have the following:</p>
 
@@ -187,22 +185,22 @@
             <hr />
             <h2 id="theMathForBackwardsPropagation"><strong>The Math for Backwards Propagation</strong></h2>
 
-            <p>When we begin the forward propagation process, the weight and biases are chosen at random within a given interval. Our job now after each epoch, we will need to optimize each weights and biases such that we minimize the error. Since this model contains multiple classes (10 to be exact), we will use Categorical Cross Entropy as our cost function.</p>
+            <p>When we begin the forward propagation process, the weight and biases are chosen at random within a given interval. Our job now after each epoch is to optimize each weights and biases such that we minimize the error. Since this model contains multiple classes (10 to be exact), we will use Categorical Cross Entropy as our cost function.</p>
 
             <p>Categorical Cross Entropy is defined as follows:</p>
 
-            <p>\(L_i=-\sum_j y_{ij}ln(\hat{y}_{ij})\)</p>
+            <p>$$L_i=-\sum_j y_{ij}ln(\hat{y}_{ij})$$</p>
 
             <p>where</p>
 
             <ul>
-                <li>\(L_i=\)sample cost value</li>
-                <li>\(y_{ij}=\)\(j^{th}\) output index of the \(i^{th}\) sample</li>
+                <li>\(L_i=\)cost value of sample \(i\)</li>
+                <li>\(y_{ij}=\)\(j^{th}\) element of \(y\) of sample \(i\)</li>
                 <li>\(y=\)target values, one-hot encoded</li>
                 <li>\(\hat{y}=\)predicted values</li>
             </ul>
 
-            <p>Due to the one-hot encoding of \(y\), our cost function simplifies to:</p>
+            <p>Due to the one-hot encoding of \(y\) and the fact that there can only be one classification per image, our cost function simplifies to:</p>
 
             <p>\(L_i=-ln(\hat{y}_{ik})\) where \(k=\)target class.</p>
 
@@ -221,99 +219,103 @@
             <p>&nbsp; &nbsp; &nbsp; &nbsp;As our probability increases for the prediction of our target class, our error decreases.</p>
 
             <h3 id="derivingTheErrorFunctionOfTheOutputLayer"><strong>Deriving the error function of the output layer</strong></h3>
-            <p>Let \(L=-\sum_m^{10} y_m ln(a_m)\) be the cost function.</p>
+            <p>Let \(L=-\sum_i^{10} y_i ln(a_i)\) be the cost function.</p>
 
             <p>Where</p>
 
             <ul>
-                <li>\(y_m\) is the value for the \(m^{th}\) index of the one-hot encoded vector</li>
-                <li>\(a_m\) is the probability for the&nbsp;\(m^{th}\) index of the output of our neural network. i.e. the activated neuron in the last layer</li>
+                <li>\(y_i\) is the \(i^{th}\) element of the one-hot encoded vector</li>
+                <li>\(a_i\) is the \(i^{th}\) element of the output of our neural network. i.e. the activated neuron in the last layer</li>
             </ul>
 
             <p>Recall:</p>
 
-            <p>$$a_n=\frac{e^{z_n}}{\sum_k^{10} e^{z_k}}$$</p>
+            <p>$$a_i=\frac{e^{z_i}}{\sum_j^{10} e^{z_j}}$$</p>
 
             <p>Then, we will need to find the following:</p>
 
-            <p>$$\frac{\partial{L}}{\partial{z_n}} = \sum_m^{10}&nbsp;\frac{\partial{L}}{\partial{a_m}}\frac{\partial{a_m}}{\partial{z_n}}$$</p>
+            <p>$$\frac{\partial{L}}{\partial{z_k}} = \sum_i^{10}&nbsp;\frac{\partial{L}}{\partial{a_i}}\frac{\partial{a_i}}{\partial{z_k}}$$</p>
 
-            <p>$$=\sum_{m\neq n}^{10}&nbsp; (\frac{\partial{L}}{\partial{a_m}}\frac{\partial{a_m}}{\partial{z_n}})&nbsp;+ \frac{\partial{L}}{\partial{a_n}}\frac{\partial{a_n}}{\partial{z_n}}$$</p>
+            <p>$$=\sum_{i\neq k}^{10}&nbsp; (\frac{\partial{L}}{\partial{a_i}}\frac{\partial{a_i}}{\partial{z_k}})&nbsp;+ \frac{\partial{L}}{\partial{a_k}}\frac{\partial{a_k}}{\partial{z_k}}$$</p>
 
-            <p>Solving for \(\frac{\partial{L}}{\partial{a_n}}\):</p>
+            <p>Solving for \(\frac{\partial{L}}{\partial{a_k}}\):</p>
 
-            <p>$$\frac{\partial{L}}{\partial{a_n}}=\frac{\partial(-\sum_m^{10} y_m ln(a_m))}{\partial a_n}$$</p>
+            <p>$$\frac{\partial{L}}{\partial{a_k}}=\frac{\partial(-\sum_i^{10} y_i ln(a_i))}{\partial a_k}$$</p>
 
-            <p>$$=\frac{\partial(-y_n ln(a_n))}{\partial a_n}$$</p>
+            <p>$$=\frac{\partial(-y_k ln(a_k))}{\partial a_k}$$</p>
 
-            <p>$$=\frac{-y_n}{a_n}$$</p>
+            <p>$$=\frac{-y_k}{a_k}$$</p>
 
-            <p style="text-align:center">\(\frac{\partial{L}}{\partial{a_n}}=\frac{-y_n}{a_n}\) ... Equation (1)</p>
+            <p style="text-align:center">\(\frac{\partial{L}}{\partial{a_k}}=\frac{-y_k}{a_k}\) ... Equation (1)</p>
 
-            <p>Solving for \(\frac{\partial{a_n}}{\partial{z_n}}\):</p>
+            <p>Solving for \(\frac{\partial{a_k}}{\partial{z_k}}\):</p>
 
-            <p>$$\frac{\partial{a_n}}{\partial{z_n}}=\frac{\partial(\frac{e^{z_n}}{\sum_m^{10} e^{z_m}})}{\partial z_n}$$</p>
+            <p>$$\frac{\partial{a_k}}{\partial{z_k}}=\frac{\partial(\frac{e^{z_k}}{\sum_i^{10} e^{z_i}})}{\partial z_k}$$</p>
 
-            <p>$$=\frac{e^{z_n}(\sum_m^{10}e^{z_m})-e^{z_n}(e^{z_n})}{(\sum_m^{10}e^{z_m})^2}$$</p>
+            <p>$$=\frac{e^{z_k}(\sum_i^{10}e^{z_i})-e^{z_k}(e^{z_k})}{(\sum_i^{10}e^{z_i})^2}$$</p>
 
-            <p>$$=\frac{e^{z_n}}{\sum_m^{10}e^z_m}(\frac{\sum_m^{10}e^{z_m}-e^{z_n}}{\sum_m^{10}e^{z_m}})$$</p>
+            <p>$$=\frac{e^{z_k}}{\sum_i^{10}e^{z_i}}(\frac{\sum_i^{10}e^{z_i}-e^{z_k}}{\sum_i^{10}e^{z_i}})$$</p>
 
-            <p>$$=\frac{e^{z_n}}{\sum_m^{10}e^{z_m}}(1-\frac{e^{z_n}}{\sum_m^{10}e^{z_m}})$$</p>
+            <p>$$=\frac{e^{z_k}}{\sum_i^{10}e^{z_i}}(1-\frac{e^{z_k}}{\sum_i^{10}e^{z_i}})$$</p>
 
-            <p>$$=a_n(1-a_n)$$</p>
+            <p>$$=a_k(1-a_k)$$</p>
 
-            <p style="text-align:center">\(\frac{\partial{a_n}}{\partial{z_n}}=a_n(1-a_n)\) ... Equation (2)</p>
+            <p style="text-align:center">\(\frac{\partial{a_k}}{\partial{z_k}}=a_k(1-a_k)\) ... Equation (2)</p>
 
-            <p>For \(\frac{\partial{L}}{\partial{a_m}}\):</p>
+            <p>For \(\frac{\partial{L}}{\partial{a_i}}\):</p>
 
-            <p>$$\frac{\partial{L}}{\partial{a_m}}=\frac{\partial(-\sum_i^{10}y_i ln(a_i))}{\partial a_m}$$</p>
+            <p>$$\frac{\partial{L}}{\partial{a_i}}=\frac{\partial(-\sum_j^{10}y_j ln(a_j))}{\partial a_i}$$</p>
 
-            <p>$$=\frac{-y_m}{a_m}$$</p>
+            <p>$$=\frac{-y_i}{a_i}$$</p>
 
-            <p style="text-align:center">\(\frac{\partial{L}}{\partial{a_m}}=\frac{-y_m}{a_m}\) ... Equation (3)</p>
+            <p style="text-align:center">\(\frac{\partial{L}}{\partial{a_i}}=\frac{-y_i}{a_i}\) ... Equation (3)</p>
 
-            <p>For \(\frac{\partial{a_m}}{\partial{z_n}}\):</p>
+            <p>For \(\frac{\partial{a_i}}{\partial{z_k}}\):</p>
 
-            <p>$$\frac{\partial{a_m}}{\partial{z_n}}=\frac{\partial(\frac{e^{z_m}}{\sum_i^{10}e^{z_i}})}{\partial z_n}$$</p>
+            <p>$$\frac{\partial{a_i}}{\partial{z_k}}=\frac{\partial(\frac{e^{z_i}}{\sum_j^{10}e^{z_j}})}{\partial z_k}$$</p>
 
-            <p>$$=\frac{0\cdot(\sum_i^{10}e^{z_i})-e^{z_m}e^{z_n}}{(\sum_i^{10}e^{z_i})^2}$$</p>
+            <p>$$=\frac{0\cdot(\sum_j^{10}e^{z_j})-e^{z_i}e^{z_k}}{(\sum_j^{10}e^{z_j})^2}$$</p>
 
-            <p>$$=-(\frac{e^{z_m}}{\sum_i^{10}e^{z_i}})(\frac{e^{z_n}}{\sum_i^{10}e^{z_i}})$$</p>
+            <p>$$=-(\frac{e^{z_i}}{\sum_j^{10}e^{z_j}})(\frac{e^{z_k}}{\sum_j^{10}e^{z_j}})$$</p>
 
-            <p>$$ =-a_ma_n$$</p>
+            <p>$$ =-a_ia_k$$</p>
 
-            <p style="text-align:center">\(\frac{\partial{a_m}}{\partial{z_n}}=-a_ma_n\) ... Equation (4)</p>
+            <p style="text-align:center">\(\frac{\partial{a_i}}{\partial{z_k}}=-a_ia_k\) ... Equation (4)</p>
 
             <p>To summarize, we have the following:</p>
 
             <ul>
-                <li>\(\frac{\partial{L}}{\partial{a_n}}=\frac{-y_n}{a_n}\) ... Equation (1)</li>
-                <li>\(\frac{\partial{a_n}}{\partial{z_n}}=a_n(1-a_n)\) ... Equation (2)</li>
-                <li>\(\frac{\partial{L}}{\partial{a_m}}=\frac{-y_m}{a_m}\) ... Equation (3)</li>
-                <li>\(\frac{\partial{a_m}}{\partial{z_n}}=-a_ma_n\) ... Equation (4)</li>
+                <li>\(\frac{\partial{L}}{\partial{a_k}}=\frac{-y_k}{a_k}\) ... Equation (1)</li>
+                <li>\(\frac{\partial{a_k}}{\partial{z_k}}=a_k(1-a_k)\) ... Equation (2)</li>
+                <li>\(\frac{\partial{L}}{\partial{a_i}}=\frac{-y_i}{a_i}\) ... Equation (3)</li>
+                <li>\(\frac{\partial{a_i}}{\partial{z_k}}=-a_ia_k\) ... Equation (4)</li>
             </ul>
 
             <p>Putting everything back into the original equation, we have:</p>
 
-            <p>$$\frac{\partial{L}}{\partial{z_n}} =\sum_{m\neq n}^{10}&nbsp; (\frac{\partial{L}}{\partial{a_m}}\frac{\partial{a_m}}{\partial{z_n}})&nbsp;+ \frac{\partial{L}}{\partial{a_n}}\frac{\partial{a_n}}{\partial{z_n}}$$</p>
+            <p>$$\frac{\partial{L}}{\partial{z_k}} =\sum_{i\neq k}^{10}&nbsp; (\frac{\partial{L}}{\partial{a_i}}\frac{\partial{a_i}}{\partial{z_k}})&nbsp;+ \frac{\partial{L}}{\partial{a_k}}\frac{\partial{a_k}}{\partial{z_k}}$$</p>
 
-            <p>$$=\sum_{m\neq n}^{10}((\frac{-y_m}{a_m})(-a_ma_n))+(\frac{-y_n}{a_n})(a_n(1-a_n))$$</p>
+            <p>$$=\sum_{i\neq k}^{10}((\frac{-y_i}{a_i})(-a_ia_k))+(\frac{-y_k}{a_k})(a_k(1-a_k))$$</p>
 
-            <p>$$=\sum_{m\neq n}^{10}(y_ma_n)+(-y_n(1-a_n))$$</p>
+            <p>$$=\sum_{i\neq k}^{10}(y_ia_k)+(-y_k(1-a_k))$$</p>
 
-            <p>$$=a_n\sum_{m\neq n}^{10}y_m+y_na_n-y_n$$</p>
+            <p>$$=\sum_{i\neq k}^{10}y_ia_k+y_ka_k-y_k$$</p>
 
-            <p>Note: Since \(y\) is one-hot encoded, it must be that \(\sum_m^{10}y_m=1\).</p>
+            <p>$$=\sum_{i=1}^{10}y_ia_k-y_k$$</p>
+
+            <p>$$=a_k\sum_{i=1}^{10}y_i-y_k$$</p>
+
+            <p>Note: Since \(y\) is one-hot encoded, it must be that \(\sum_i^{10}y_i=1\).</p>
 
             <p>Hence we can further simplify to the following:</p>
 
-            <p>$$a_n\sum_{m\neq n}^{10}y_m+y_na_n-y_n$$</p>
+            <p>$$=a_k\sum_{i=1}^{10}y_i-y_k$$</p>
 
-            <p>$$=a_n\cdot 1 -y_n$$</p>
+            <p>$$=a_k\cdot 1 -y_k$$</p>
 
-            <p>$$=a_n-y_n$$</p>
+            <p>$$=a_k-y_k$$</p>
 
-            <p>In vector form, the above is simply just \(\frac{\partial L}{\partial Z_f}=a^{[f]}-y\) where \(f\) is the final layer.&nbsp;(Note: \([f]\) is put in the superscript and DOES NOT mean exponent/power)</p>
+            <p>In vector form, the above is simply just \(\frac{\partial L}{\partial Z^{[L]}}=a^{[L]}-y\) where \([L]\) is the last layer.&nbsp;(Note: \([L]\) is put in the superscript and DOES NOT mean exponent/power)</p>
 
             <h3 id="derivingTheErrorFunctionOfEveryOtherLayer"><strong>Deriving the error function of every other layer</strong></h3>
 
@@ -616,33 +618,33 @@
 
 &nbsp; &nbsp; &nbsp;one_hot_Y = one_hot(Y) # Perform one-hot-encoding on Y
 
-&nbsp; &nbsp; &nbsp;dZ2 = A2 - one_hot_Y &nbsp; # Calculate error
+&nbsp; &nbsp; &nbsp;error_Z2 = A2 - one_hot_Y &nbsp; # Calculate error
 
-&nbsp; &nbsp; &nbsp;dW2 = 1 / m * dZ2.dot(A1.T)
+&nbsp; &nbsp; &nbsp;error_W2 = 1 / m * error_Z2.dot(A1.T)
 
-&nbsp; &nbsp; &nbsp;db2 = 1 / m * np.sum(dZ2)
+&nbsp; &nbsp; &nbsp;error_b2 = 1 / m * np.sum(error_Z2)
 
-&nbsp; &nbsp; &nbsp;dZ1 = W2.T.dot(dZ2) * deriv_ReLU(Z1)
+&nbsp; &nbsp; &nbsp;error_Z1 = W2.T.dot(error_Z2) * deriv_ReLU(Z1)
 
-&nbsp; &nbsp; &nbsp;dW1 = 1 / m * dZ1.dot(X.T)
+&nbsp; &nbsp; &nbsp;error_W1 = 1 / m * error_Z1.dot(X.T)
 
-&nbsp; &nbsp; &nbsp;db1 = 1 / m * np.sum(dZ1)
+&nbsp; &nbsp; &nbsp;error_b1 = 1 / m * np.sum(error_Z1)
 
-&nbsp; &nbsp; &nbsp;return dW1, db1, dW2, db2</code></pre></p>
+&nbsp; &nbsp; &nbsp;return error_W1, error_b1, error_W2, error_b2</code></pre></p>
 
             <p>Defining the function to update weights and biases.</p>
 
-            <p><pre><code>&gt;&gt;&gt;def update_params(W1, b1, W2, b2, dW1, db1, dW2, db2, alpha):
+            <p><pre><code>&gt;&gt;&gt;def update_params(W1, b1, W2, b2, error_W1, error_b1, error_W2, error_b2, alpha):
 
-&nbsp; &nbsp; &nbsp;W1 = W1 - alpha * dW1
+&nbsp; &nbsp; &nbsp;new_W1 = W1 - alpha * error_W1
 
-&nbsp; &nbsp; &nbsp;b1 = b1 - alpha * db1
+&nbsp; &nbsp; &nbsp;new_b1 = b1 - alpha * error_b1
 
-&nbsp; &nbsp; &nbsp;W2 = W2 - alpha * dW2
+&nbsp; &nbsp; &nbsp;new_W2 = W2 - alpha * error_W2
 
-&nbsp; &nbsp; &nbsp;b2 = b2 - alpha * db2
+&nbsp; &nbsp; &nbsp;new_b2 = b2 - alpha * error_b2
 
-&nbsp; &nbsp; &nbsp;return W1, b1, W2, b2</code></pre></p>
+&nbsp; &nbsp; &nbsp;return new_W1, new_b1, new_W2, new_b2</code></pre></p>
 
             <h3 id="theLearningAlgorithm"><strong>The Learning Algorithm</strong></h3>
 
@@ -670,9 +672,9 @@
 
 &nbsp; &nbsp; &nbsp; &nbsp;Z1, A1, Z2, A2 = forward_prop(W1, b1, W2, b2, X)
 
-&nbsp; &nbsp; &nbsp; &nbsp;dW1, db1, dW2, db2 = back_prop(Z1, A1, Z2, A2, W1, W2, X, Y)
+&nbsp; &nbsp; &nbsp; &nbsp;error_W1, error_b1, error_W2, error_b2 = back_prop(Z1, A1, Z2, A2, W1, W2, X, Y)
 
-&nbsp; &nbsp; &nbsp; &nbsp;W1, b1, W2, b2 = update_params(W1, b1, W2, b2, dW1, db1, dW2, db2, alpha)
+&nbsp; &nbsp; &nbsp; &nbsp;W1, b1, W2, b2 = update_params(W1, b1, W2, b2, error_W1, error_b1, error_W2, error_b2, alpha)
 
 &nbsp; &nbsp; &nbsp; &nbsp;if (i % 10) == 0:
 
